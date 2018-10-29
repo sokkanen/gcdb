@@ -1,6 +1,6 @@
 # OTM-kurssi
 
-**Markdown:n** *ominaisuuksien* ihmettelyä
+**Markdown:n** ominaisuuksien ihmettelyä
 
 ```
 while(alive){
