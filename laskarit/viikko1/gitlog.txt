@@ -1,0 +1,123 @@
+commit c3f0e62f0991cd630df0bf40bd3d9f96461102a7
+Author: sokkanen <joel.sokkanen@helsinki.fi>
+Date:   Mon Oct 29 22:37:05 2018 +0200
+
+    Testiä...
+
+     tiedostoja/file2             | 0
+      tiedostoja/{file1 => file22} | 0
+       2 files changed, 0 insertions(+), 0 deletions(-)
+
+       commit ea8bc263b205edbfd2c9c8846c999a50cf3ad1ff
+       Author: sokkanen <joel.sokkanen@helsinki.fi>
+       Date:   Mon Oct 29 22:33:56 2018 +0200
+
+           Testailua
+
+            tiedostoja/file3 | 1 +
+             1 file changed, 1 insertion(+)
+
+             commit f02c3ad8548f4c93a46096b9b49884f945ca21c5
+             Author: sokkanen <joel.sokkanen@helsinki.fi>
+             Date:   Mon Oct 29 22:32:19 2018 +0200
+
+                 tiedostokansion lisäys
+
+                  tiedostoja/file1 | 0
+                   tiedostoja/file2 | 0
+                    tiedostoja/file3 | 0
+                     3 files changed, 0 insertions(+), 0 deletions(-)
+
+                     commit a6d67a00e4d46a6b3f7321f67adc74fba3c0e004
+                     Author: sokkanen <joel.sokkanen@helsinki.fi>
+                     Date:   Mon Oct 29 22:27:45 2018 +0200
+
+                         Muutoksia.
+
+                          eka.txt    | 2 +-
+                           kolmas.txt | 4 +++-
+                            2 files changed, 4 insertions(+), 2 deletions(-)
+
+                            commit d87a1a65d9278768550cb06b08e1a741f8ba7518
+                            Author: sokkanen <joel.sokkanen@helsinki.fi>
+                            Date:   Mon Oct 29 22:25:13 2018 +0200
+
+                                Tiedosto -> Eka
+
+                                 tiedosto.txt => eka.txt | 0
+                                  1 file changed, 0 insertions(+), 0 deletions(-)
+
+                                  commit ff068eb3e4f0cb3235fbb59b857fbcfa678c0a83
+                                  Author: sokkanen <joel.sokkanen@helsinki.fi>
+                                  Date:   Mon Oct 29 22:24:28 2018 +0200
+
+                                      Toinen poistettu
+
+                                       toinen.txt | 1 -
+                                        1 file changed, 1 deletion(-)
+
+                                        commit d7fa9ac0f122181247ed1097976607b44af78570
+                                        Author: sokkanen <joel.sokkanen@helsinki.fi>
+                                        Date:   Mon Oct 29 22:21:59 2018 +0200
+
+                                            tarkennuksia
+
+                                             tiedosto.txt | 4 +++-
+                                              1 file changed, 3 insertions(+), 1 deletion(-)
+
+                                              commit c5f14046b7db240730dfeb79ea7e65ccb35e4c32
+                                              Author: sokkanen <joel.sokkanen@helsinki.fi>
+                                              Date:   Mon Oct 29 22:20:55 2018 +0200
+
+                                                  Tiedostossa on nyt paljon tekstiä
+
+                                                   tiedosto.txt | 17 ++++++++++++++++-
+                                                    1 file changed, 16 insertions(+), 1 deletion(-)
+
+                                                    commit c166f7aa4ffbce5d3777b51cbf93bfa0cca5cc36
+                                                    Author: sokkanen <joel.sokkanen@helsinki.fi>
+                                                    Date:   Sun Oct 28 22:24:13 2018 +0200
+
+                                                        hakemiston lisäys
+
+                                                         stuff/jokintiedosto.txt | 0
+                                                          1 file changed, 0 insertions(+), 0 deletions(-)
+
+                                                          commit 0cc718fbef1e1c21657a50833b3e0708cdcaaafb
+                                                          Author: sokkanen <joel.sokkanen@helsinki.fi>
+                                                          Date:   Sun Oct 28 22:22:25 2018 +0200
+
+                                                              toisen ja kolmannen tiedoston muokkaus
+
+                                                               kolmas.txt | 1 +
+                                                                toinen.txt | 1 +
+                                                                 2 files changed, 2 insertions(+)
+
+                                                                 commit 1161b0a6865d76081d2c5dc7c6b489db4bf6911f
+                                                                 Author: sokkanen <joel.sokkanen@helsinki.fi>
+                                                                 Date:   Sun Oct 28 22:21:27 2018 +0200
+
+                                                                     kolmannen tiedoston lisays
+
+                                                                      kolmas.txt | 0
+                                                                       1 file changed, 0 insertions(+), 0 deletions(-)
+
+                                                                       commit f4b787798b7cb3026f8ffc17897a00b0b07846c7
+                                                                       Author: sokkanen <joel.sokkanen@helsinki.fi>
+                                                                       Date:   Sun Oct 28 22:18:31 2018 +0200
+
+                                                                           muutos ja lisäys
+
+                                                                            tiedosto.txt | 1 +
+                                                                             toinen.txt   | 0
+                                                                              2 files changed, 1 insertion(+)
+
+                                                                              commit b698cec06da080ca88fd5633f364671ec09ddaad
+                                                                              Author: sokkanen <joel.sokkanen@helsinki.fi>
+                                                                              Date:   Sun Oct 28 20:58:39 2018 +0200
+
+                                                                                  tiedosto.txt luotu
+
+                                                                                   tiedosto.txt | 0
+                                                                                    1 file changed, 0 insertions(+), 0 deletions(-)
+                                                                                    
