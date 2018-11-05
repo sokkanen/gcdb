@@ -1,27 +1,31 @@
-##Sovelluksen tarkoitus
+
+Sovelluksen tarkoitus
+---------------------
 
 Game Collector's DB -sovellus on suunnattu erityisesti videopelikeräilijöiden kokoelmahallintaan. Sovellukseen
 rekisteröityneet käyttäjät voivat lisätä sovelluksen tietokantaan kokoelmansa pelit alustoittain (Gaming platform), 
 ja näin helpottaa kokoelmansa kirjanpitoa.
 
-### Käyttäjät
+### Käyttäjät ###
 
 Ohjelman ensimmäisessä versiossa on vain peruskäyttäjiä.
 
-### Käyttöliittymäluonnos
+### Käyttöliittymäluonnos ###
 
 Ensimmäisessä vaiheessa sovellus koostuu kolmesta näkymästä. Myöhempiin versioihin on tarkoitus lisätä pelinäkymä.
 
-### Perusversion tarjoama toiminnallisuus
+![](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/kuvat/uidraft.JPG)
 
-#### Ennen kirjautumista
+### Perusversion tarjoama toiminnallisuus ###
+
+#### Ennen kirjautumista ###
 
 * Käyttäjä voi luoda salasanalla suojatun käyttäjätunnuksen
 	* Käyttäjätunnuksen ja salasanan tulee olla vähintään 5 merkkiä pitkiä
 * Käyttäjä voi kirjautua järjestelmään käyttäjätunnuksella ja salasanalla
 	* Jos käyttätunnusta ei ole luotu, järjestelmä ilmoittaa virheestä
 
-#### Kirjautumisen jälkeen
+#### Kirjautumisen jälkeen ###
 
 * Kunkin käyttäjän sisältö näkyy vain kyseiselle käyttäjälle
 
@@ -35,7 +39,7 @@ Ensimmäisessä vaiheessa sovellus koostuu kolmesta näkymästä. Myöhempiin ve
 
 * Käyttäjä voi kirjautua ulos järjestelmästä
 
-### Jatkokehitysideoita
+### Jatkokehitysideoita ###
 
 Perusversion julkaisun jälkeen ohjelmaa on tarkoitus täydentää seuraavilla ominaisuuksilla
 
