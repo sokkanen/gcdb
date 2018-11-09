@@ -13,7 +13,8 @@ sleep();
 [gitlog.txt](https://github.com/sokkanen/ot-harjoitustyo/blob/master/laskarit/viikko1/gitlog.txt)  
 [komentorivi.txt](https://github.com/sokkanen/ot-harjoitustyo/blob/master/laskarit/viikko1/komentorivi.txt)
 
-### Viikko2:  
+### Tehtävät, viikko2:  
 [vaatimusmaarittely.md](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/vaatimusmaarittely.md)
+
 [unicafe_test_report.png](
 https://github.com/sokkanen/ot-harjoitustyo/blob/master/laskarit/viikko2/unicafe_test_report.png)
