@@ -15,4 +15,5 @@ sleep();
 
 ### Viikko2:  
 [vaatimusmaarittely.md](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/vaatimusmaarittely.md)
-
+[unicafe_test_report.png](
+https://github.com/sokkanen/ot-harjoitustyo/blob/master/laskarit/viikko2/unicafe_test_report.png)
