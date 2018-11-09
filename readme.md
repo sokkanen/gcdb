@@ -13,3 +13,6 @@ sleep();
 [gitlog.txt](https://github.com/sokkanen/ot-harjoitustyo/blob/master/laskarit/viikko1/gitlog.txt)  
 [komentorivi.txt](https://github.com/sokkanen/ot-harjoitustyo/blob/master/laskarit/viikko1/komentorivi.txt)
 
+### Viikko2:  
+[vaatimusmaarittely.md](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/vaatimusmaarittely.md)
+
