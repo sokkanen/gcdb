@@ -7,11 +7,8 @@ public class UserTest {
     
     User testikayttaja;
     
-    public UserTest() {
-        this.testikayttaja = new User("Erkki", "YsiViisEiUnohdu");
-    }
-    
     @Before
     public void setUp() {
+        this.testikayttaja = new User("Erkki", "YsiViisEiUnohdu");
     }
 }
