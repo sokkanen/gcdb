@@ -1,39 +1,40 @@
 package app.gcdb.ui;
 
+import app.gcdb.dao.UserDao;
 import app.gcdb.database.Database;
+import app.gcdb.domain.User;
 import java.sql.SQLException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class GUI extends Application {
 
-    public static Database database;
     private Button loginButton;
     private Button toNewUserWindow;
     private Button backToLoginView;
     private Button logOutFromProgram;
+    private UserDao userdao;
+    private Database database;
 
     public GUI() {
         this.loginButton = new Button();
         this.toNewUserWindow = new Button();
         this.backToLoginView = new Button();
         this.logOutFromProgram = new Button();
+        this.database = new Database("jdbc:sqlite:gcdb.db");
+        this.userdao = new UserDao(database);
     }
 
     @Override
@@ -59,8 +60,6 @@ public class GUI extends Application {
     }
 
     public static void main(String[] args) throws SQLException {
-        database = new Database("jdbc:sqlite:gcdb.db");
-        database.newConnection();
         launch(args);
     }
 
@@ -96,22 +95,52 @@ public class GUI extends Application {
     }
 
     public Scene loadNewUserWindow() {
+        Label info = new Label();
+        info.setText("Press <ENTER> in the password field to create a new user");
+        info.setTextFill(Color.rgb(66, 244, 244));
         BorderPane newUserWindow = new BorderPane();
         HBox signInElements = new HBox();
         this.backToLoginView.setText("Back");
         this.backToLoginView.setStyle("-fx-background-color: #DE5865;");
-        Button newUser = new Button("Create user");
-        newUser.setStyle("-fx-background-color: #70E124;");
         VBox usernameAndPassword = new VBox();
         Text enterusername = new Text("Please enter username");
         Text enterpassword = new Text("Please enter password");
-        Text enterpassword2 = new Text("Please re-enter password");
         TextField username = new TextField();
+        username.setPromptText("username");
         PasswordField password = new PasswordField();
-        PasswordField password2 = new PasswordField();
+        password.setPromptText("password");
 
-        usernameAndPassword.getChildren().addAll(enterusername, username, enterpassword, password, enterpassword2, password2);
-        signInElements.getChildren().addAll(backToLoginView, newUser);
+        password.setOnAction((event) -> {
+            try {
+                User user = new User(username.getText(), password.getText());
+                boolean doesNotExist = false;
+                boolean emptyValue = false;
+                if (username.getText().equals("") || password.getText().equals("")) {
+                    emptyValue = true;
+                } else {
+                    doesNotExist = userdao.save(user);
+                }
+                if (doesNotExist) {
+                    info.setText("New user '" + username.getText() + "' was created");
+                    info.setTextFill(Color.rgb(66, 244, 69));
+                    username.clear();
+                    password.clear();
+                } else if (emptyValue) {
+                    info.setText("Username or password empty");
+                    info.setTextFill(Color.rgb(195, 25, 25));
+                } else {
+                    info.setText("Please choose another username");
+                    info.setTextFill(Color.rgb(195, 25, 25));
+                    username.clear();
+                    password.clear();
+                }
+            } catch (SQLException ex) {
+
+            }
+        });
+
+        usernameAndPassword.getChildren().addAll(enterusername, username, enterpassword, password, info);
+        signInElements.getChildren().addAll(backToLoginView);
 
         /* Padding ja välit elementeille */
         signInElements.setSpacing(20);

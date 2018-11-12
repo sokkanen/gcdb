@@ -14,6 +14,11 @@ public class User {
         this.username = username;
         this.passHash = generatePassHash(password);
     }
+    
+    public User(String username, int passhash) {
+        this.username = username;
+        this.passHash = passhash;
+    }
 
     public User(String username, String password, List<Game> games, List<Platform> platforms) {
         this.username = username;
@@ -66,5 +71,10 @@ public class User {
 
     public List<Platform> getPlatforms() {
         return this.platforms;
+    }
+    
+    @Override
+    public String toString(){
+        return this.username + " " + this.passHash;
     }
 }
