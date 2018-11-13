@@ -48,8 +48,8 @@ public class UserDao implements Dao {
     }
 
     @Override
-    public void delete(Object arg) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void delete(Object arg) throws SQLException { // Toteutus ylläpitäjän toteutuksen yhteydessä.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

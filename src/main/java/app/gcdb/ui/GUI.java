@@ -21,25 +21,25 @@ import javafx.stage.Stage;
 
 public class GUI extends Application {
 
-    private Button loginButton;
     private Button toNewUserWindow;
     private Button backToLoginView;
-    private Button logOutFromProgram;
+    private Button logOut;
+    private Button login;
     private UserDao userdao;
     private Database database;
+    private User loggedInUser;
 
     public GUI() {
-        this.loginButton = new Button();
         this.toNewUserWindow = new Button();
         this.backToLoginView = new Button();
-        this.logOutFromProgram = new Button();
+        this.logOut = new Button();
+        this.login = new Button();
         this.database = new Database("jdbc:sqlite:gcdb.db");
         this.userdao = new UserDao(database);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-
         stage.setTitle("Game Collector's Database");
         stage.setWidth(600);
         stage.setHeight(600);
@@ -50,12 +50,13 @@ public class GUI extends Application {
         backToLoginView.setOnAction((event) -> {
             stage.setScene(loadLoginWindow());
         });
-        /*loginButton.setOnAction((event) -> {
-            stage.setScene(null); // MAIN WINDOW
+        login.setOnAction((event) -> {
+            stage.setScene(loadMainWindow());
         });
-        logOutFromProgram.setOnAction((event) -> {
+        logOut.setOnAction((event) -> {
+            this.loggedInUser = null;
             stage.setScene(loadLoginWindow());
-        });*/
+        });
         stage.show();
     }
 
@@ -67,18 +68,46 @@ public class GUI extends Application {
     public Scene loadLoginWindow() {
         BorderPane signInWindow = new BorderPane();
         HBox signInElements = new HBox();
-        this.loginButton.setText("Sign In");
-        this.loginButton.setStyle("-fx-background-color: #70E124;");
         this.toNewUserWindow.setText("Create new user");
         this.toNewUserWindow.setStyle("-fx-background-color: #70A4DF;");
+        this.login.setText("LOGIN");
+        this.login.setStyle("-fx-background-color: #42E621;");
+        this.logOut.setText("LOGOUT");
+        this.logOut.setStyle("-fx-background-color: #DE5865;");
         VBox usernameAndPassword = new VBox();
-        Text enterusername = new Text("Please enter username");
-        Text enterpassword = new Text("Please enter password");
+        Text enterusername = new Text("Please enter username and password or create a new user");
         TextField username = new TextField();
+        username.setPromptText("username");
+        Label label = new Label();
+        label.setText("Press <ENTER> to enter credentials");
+        label.setTextFill(Color.rgb(236, 236, 34));
         PasswordField password = new PasswordField();
+        password.setPromptText("password");
+        password.setOnAction((event) -> {
+            User entered = new User(username.getText(), password.getText());
+            try {
+                User fromDataBase = (User) userdao.findOne(entered);
+                if (fromDataBase == null) {
+                    label.setText("User not found");
+                    label.setTextFill(Color.rgb(195, 25, 25));
+                } else if (fromDataBase.getPassHash() != entered.getPassHash()) {
+                    label.setText("Wrong password");
+                    label.setTextFill(Color.rgb(195, 25, 25));
+                } else {
+                    this.loggedInUser = fromDataBase;
+                    label.setText("Welcome " + fromDataBase.getUsername() + "! Press <LOGIN> to start.");
+                    label.setTextFill(Color.rgb(66, 244, 69));
+                    signInElements.getChildren().addAll(this.login, this.logOut);
+                }
+            } catch (SQLException error) {
+                System.out.println(error.getMessage());
+            }
+            password.clear();
+            username.clear();
+        });
 
-        usernameAndPassword.getChildren().addAll(enterusername, username, enterpassword, password);
-        signInElements.getChildren().addAll(loginButton, toNewUserWindow);
+        usernameAndPassword.getChildren().addAll(enterusername, username, password, label);
+        signInElements.getChildren().add(toNewUserWindow);
 
         /* Padding ja välit elementeille */
         signInElements.setSpacing(20);
@@ -97,7 +126,7 @@ public class GUI extends Application {
     public Scene loadNewUserWindow() {
         Label info = new Label();
         info.setText("Press <ENTER> in the password field to create a new user");
-        info.setTextFill(Color.rgb(66, 244, 244));
+        info.setTextFill(Color.rgb(236, 236, 34));
         BorderPane newUserWindow = new BorderPane();
         HBox signInElements = new HBox();
         this.backToLoginView.setText("Back");
@@ -135,7 +164,7 @@ public class GUI extends Application {
                     password.clear();
                 }
             } catch (SQLException ex) {
-
+                System.out.println(ex.getMessage());
             }
         });
 
@@ -156,12 +185,21 @@ public class GUI extends Application {
         return newUserScene;
     }
 
+    public Scene loadMainWindow() {
+        BorderPane mainWindow = new BorderPane();
+        this.logOut.setText("LOGOUT");
+        this.logOut.setStyle("-fx-background-color: #DE5865;");
+        mainWindow.setBottom(this.logOut);
+        Scene mainScene = new Scene(mainWindow);
+        return mainScene;
+    }
+
     public void exitProgram() {
         try {
             database.closeConnection();
         } catch (SQLException e) {
             System.out.println("error closing database");
         }
-        // Exit ja close database
+        // Exit and close database
     }
 }
