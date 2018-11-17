@@ -19,6 +19,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/** GUI-olio on ohjelman pääluokka. 
+* GUI vastaa graafisen käyttöliittymän luomisesta ja esittämisestä.
+* GUI käyttää DAO-pakkauksen luokkia tiedon hakemiseen ja tallentamiseen.
+*/
+
 public class GUI extends Application {
 
     private Button toNewUserWindow;
@@ -29,7 +34,8 @@ public class GUI extends Application {
     private Database database;
     private User loggedInUser;
 
-    public GUI() {
+    @Override
+    public void init() {
         this.toNewUserWindow = new Button();
         this.backToLoginView = new Button();
         this.logOut = new Button();
@@ -38,12 +44,18 @@ public class GUI extends Application {
         this.userdao = new UserDao(database);
     }
 
+    
+    /* Painiketoiminnot määritelty start-metodissa, koska vaikuttavat suoraan
+    Stage-olioon.
+    */ 
+    
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("Game Collector's Database");
         stage.setWidth(600);
         stage.setHeight(600);
         stage.setScene(loadLoginWindow());
+        stage.show();
         toNewUserWindow.setOnAction((event) -> {
             stage.setScene(loadNewUserWindow());
         });
@@ -57,11 +69,6 @@ public class GUI extends Application {
             this.loggedInUser = null;
             stage.setScene(loadLoginWindow());
         });
-        stage.show();
-    }
-
-    public static void main(String[] args) throws SQLException {
-        launch(args);
     }
 
     /* Ensimmäinen näkymä -> Login */
@@ -123,6 +130,8 @@ public class GUI extends Application {
         return loginScene;
     }
 
+    
+    /*Uuden käyttäjän luominen */
     public Scene loadNewUserWindow() {
         Label info = new Label();
         info.setText("Press <ENTER> in the password field to create a new user");
@@ -194,12 +203,20 @@ public class GUI extends Application {
         return mainScene;
     }
 
-    public void exitProgram() {
+    
+    
+    public static void main(String[] args) throws SQLException {
+        launch(args);
+    }
+    
+    // Sulkee tietokannan. Ei vielä ilmoita, että ohjelman voi sulkea.
+    @Override
+    public void stop() {
         try {
             database.closeConnection();
         } catch (SQLException e) {
             System.out.println("error closing database");
         }
-        // Exit and close database
+        
     }
 }
