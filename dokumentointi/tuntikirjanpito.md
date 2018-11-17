@@ -8,3 +8,4 @@ päivä | aika | mitä tein
 11.11 | 3    | Domain-luokkien säätämistä ja JAVAFX-elementtien rakentamista
 12.11 | 2    | Uuden käyttäjän luomisen toiminnallisuus kokonaisuudessaan (UserDao ja GUI sekä tietokanta).
 13.11 | 1    | Rekisteröityneen käyttäjän sisään- ja uloskirjautuminen. 
+16.11 | 1    | GUI:n init-toiminnallisuuden hionta
