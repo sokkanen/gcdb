@@ -40,6 +40,9 @@ public class UserPlatformDao implements Dao<String, Object> {
     @Override
     public boolean save(Object arg) throws SQLException {
         Platform pltfrm = (Platform) arg;
+        if (!findOne(arg).isEmpty()){
+            return false;
+        }
         try (Connection conn = db.newConnection()) {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO UserPlatform(user_id, platform_id) VALUES (?,?)");
             stmt.setInt(1, user.getId());
@@ -59,6 +62,19 @@ public class UserPlatformDao implements Dao<String, Object> {
 
     @Override
     public String findOne(Object arg) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Platform pltfrm = (Platform) arg;
+        try (Connection connection = db.newConnection()) {
+            PreparedStatement stmt = connection.prepareStatement("SELECT user_id, platform_id FROM UserPlatform WHERE user_id = ? AND platform_id = ?");
+            stmt.setInt(1, user.getId());
+            stmt.setInt(2, pltfrm.getId());
+            ResultSet rsset = stmt.executeQuery();
+            String userAndPlatform = rsset.getInt("user_id") + rsset.getInt("platform_id") + "";
+            rsset.close();
+            connection.close();
+            return userAndPlatform;
+        } catch (SQLException error){
+            System.out.println("findone: " + error.getMessage());
+        }
+        return "";
     }
 }

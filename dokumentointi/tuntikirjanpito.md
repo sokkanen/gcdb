@@ -9,4 +9,4 @@ päivä | aika | mitä tein
 12.11 | 2    | Uuden käyttäjän luomisen toiminnallisuus kokonaisuudessaan (UserDao ja GUI sekä tietokanta).
 13.11 | 1    | Rekisteröityneen käyttäjän sisään- ja uloskirjautuminen. 
 16.11 | 1    | GUI:n init-toiminnallisuuden hionta
-24.11 | 4    | PlatformDao ja UserPlatformDao-luokat. Pelialustojen listaaminen. Checkstyle. 
+24.11 | 6    | PlatformDao ja UserPlatformDao-luokat. Pelialustojen listaaminen. Checkstyle. 

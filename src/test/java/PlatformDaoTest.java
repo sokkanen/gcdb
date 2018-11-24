@@ -1,3 +1,7 @@
+import app.gcdb.dao.PlatformDao;
+import app.gcdb.database.Database;
+import app.gcdb.domain.User;
+import java.sql.SQLException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -7,22 +11,20 @@ import static org.junit.Assert.*;
 
 public class PlatformDaoTest {
     
-    public PlatformDaoTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
+    private Database db;
+    private User testUser;
+    private PlatformDao testDao;
     
     @Before
     public void setUp() {
+        this.db = new Database("jdbc:sqlite:testdb.db");
+        this.testUser = new User("JohnDoe", 1164756051, 0);
+        this.testDao = new PlatformDao(db, testUser);
     }
     
-    @After
-    public void tearDown() {
+    @Test
+    public void cannotSavePlatformThatExists() throws SQLException{
+        
     }
+    
 }

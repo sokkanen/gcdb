@@ -45,10 +45,13 @@ public class PlatformDao implements Dao {
 
     @Override
     public boolean save(Object arg) throws SQLException {
-        if (findOne(arg) != null) {
-            return false;
-        }
         Platform pltfrm = (Platform) arg;
+        if (findOne(arg) != null) {
+            pltfrm = (Platform) findOne(arg);
+            userPlatform.save(pltfrm);
+            return true;
+        }
+
         String toBeInserted = pltfrm.getName();
         try (Connection connection = db.newConnection()) {
             PreparedStatement stmt = connection.prepareStatement("INSERT INTO Platform(name) VALUES (?)");
