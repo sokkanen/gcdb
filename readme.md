@@ -6,6 +6,7 @@ ja näin helpottaa kokoelmansa kirjanpitoa. Sovellus tukee useaa rekisteröityny
 
 ### Dokumentaatio  
 [Vaatimusmäärittely](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/vaatimusmaarittely.md)
+
 [Tuntikirjanpito](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/tuntikirjanpito.md)
 
 ### Komentorivitoiminnot
