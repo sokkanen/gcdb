@@ -20,14 +20,14 @@ public class UserDao implements Dao {
     public Object findOne(Object arg) throws SQLException {
         User user = (User) arg;
         try (Connection connection = db.newConnection()) {
-            PreparedStatement stmt = connection.prepareStatement("SELECT username, passhash FROM User WHERE username = ?");
+            PreparedStatement stmt = connection.prepareStatement("SELECT username, passhash, id FROM User WHERE username = ?");
             stmt.setString(1, user.getUsername());
             ResultSet rsset = stmt.executeQuery();
             if (!rsset.next()) {
                 return null;
             }
 
-            return new User(rsset.getString("username"), rsset.getInt("passhash"));
+            return new User(rsset.getString("username"), rsset.getInt("passhash"), rsset.getInt("id"));
         }
     }
 

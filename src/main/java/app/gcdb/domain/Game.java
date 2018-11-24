@@ -3,10 +3,11 @@ package app.gcdb.domain;
 /**
  * Peliolio, joka sisältää pelin nimen, alustan, kunnon ja sisällön.
  */
-public class Game implements Comparable<Game>{
+public class Game implements Comparable<Game> {
 
     private String name;
     private Platform platform;
+    private int id;
 
     public enum Condition {
         MINT,
@@ -30,11 +31,12 @@ public class Game implements Comparable<Game>{
     private Condition condition;
     private Content content;
 
-    public Game(String name, Platform platform, Condition cnd, Content cnt) {
+    public Game(String name, Platform platform, Condition cnd, Content cnt, int id) {
         this.name = name;
         this.platform = platform;
         this.condition = cnd;
         this.content = cnt;
+        this.id = id;
     }
 
     public Game(String name, Platform platform) {

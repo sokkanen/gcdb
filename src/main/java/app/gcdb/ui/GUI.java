@@ -1,36 +1,43 @@
 package app.gcdb.ui;
 
+import app.gcdb.dao.PlatformDao;
 import app.gcdb.dao.UserDao;
 import app.gcdb.database.Database;
+import app.gcdb.domain.Platform;
 import app.gcdb.domain.User;
 import java.sql.SQLException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-/** GUI-olio on ohjelman pääluokka. 
-* GUI vastaa graafisen käyttöliittymän luomisesta ja esittämisestä.
-* GUI käyttää DAO-pakkauksen luokkia tiedon hakemiseen ja tallentamiseen.
-*/
-
+/**
+ * GUI-olio on ohjelman pääluokka. GUI vastaa graafisen käyttöliittymän
+ * luomisesta ja esittämisestä. GUI käyttää DAO-pakkauksen luokkia tiedon
+ * hakemiseen ja tallentamiseen.
+ */
 public class GUI extends Application {
 
     private Button toNewUserWindow;
     private Button backToLoginView;
     private Button logOut;
     private Button login;
-    private UserDao userdao;
+    private UserDao userDao;
+    private PlatformDao platformDao;
     private Database database;
     private User loggedInUser;
 
@@ -41,16 +48,14 @@ public class GUI extends Application {
         this.logOut = new Button();
         this.login = new Button();
         this.database = new Database("jdbc:sqlite:gcdb.db");
-        this.userdao = new UserDao(database);
+        this.userDao = new UserDao(database);
     }
 
-    
     /* Painiketoiminnot määritelty start-metodissa, koska vaikuttavat suoraan
     Stage-olioon.
-    */ 
-    
+     */
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) throws SQLException {
         stage.setTitle("Game Collector's Database");
         stage.setWidth(600);
         stage.setHeight(600);
@@ -75,25 +80,37 @@ public class GUI extends Application {
     public Scene loadLoginWindow() {
         BorderPane signInWindow = new BorderPane();
         HBox signInElements = new HBox();
+        signInElements.setSpacing(10);
+        Button closeProgram = new Button();
+        VBox usernameAndPassword = new VBox();
+        Label label = new Label();
+        closeProgram.setStyle("-fx-background-color: #DE5865;");
+        closeProgram.setText("CLOSE PROGRAM");
+        closeProgram.setOnAction((event) -> {
+            stop();
+            label.setText("You can now close the program");
+            label.setFont(Font.font("Cambria", 32));
+            label.setTextFill(Color.rgb(66, 194, 244));
+            signInWindow.getChildren().removeAll(signInElements, usernameAndPassword);
+            signInWindow.setCenter(label);
+        });
         this.toNewUserWindow.setText("Create new user");
         this.toNewUserWindow.setStyle("-fx-background-color: #70A4DF;");
         this.login.setText("LOGIN");
         this.login.setStyle("-fx-background-color: #42E621;");
         this.logOut.setText("LOGOUT");
         this.logOut.setStyle("-fx-background-color: #DE5865;");
-        VBox usernameAndPassword = new VBox();
         Text enterusername = new Text("Please enter username and password or create a new user");
         TextField username = new TextField();
         username.setPromptText("username");
-        Label label = new Label();
         label.setText("Press <ENTER> to enter credentials");
-        label.setTextFill(Color.rgb(236, 236, 34));
+        label.setTextFill(Color.rgb(66, 194, 244));
         PasswordField password = new PasswordField();
         password.setPromptText("password");
         password.setOnAction((event) -> {
-            User entered = new User(username.getText(), password.getText());
+            User entered = new User(username.getText(), password.getText(), 1);
             try {
-                User fromDataBase = (User) userdao.findOne(entered);
+                User fromDataBase = (User) userDao.findOne(entered);
                 if (fromDataBase == null) {
                     label.setText("User not found");
                     label.setTextFill(Color.rgb(195, 25, 25));
@@ -114,7 +131,7 @@ public class GUI extends Application {
         });
 
         usernameAndPassword.getChildren().addAll(enterusername, username, password, label);
-        signInElements.getChildren().add(toNewUserWindow);
+        signInElements.getChildren().addAll(toNewUserWindow, closeProgram);
 
         /* Padding ja välit elementeille */
         signInElements.setSpacing(20);
@@ -130,7 +147,6 @@ public class GUI extends Application {
         return loginScene;
     }
 
-    
     /*Uuden käyttäjän luominen */
     public Scene loadNewUserWindow() {
         Label info = new Label();
@@ -150,13 +166,13 @@ public class GUI extends Application {
 
         password.setOnAction((event) -> {
             try {
-                User user = new User(username.getText(), password.getText());
+                User user = new User(username.getText(), password.getText(), 1);
                 boolean doesNotExist = false;
                 boolean emptyValue = false;
                 if (username.getText().equals("") || password.getText().equals("")) {
                     emptyValue = true;
                 } else {
-                    doesNotExist = userdao.save(user);
+                    doesNotExist = userDao.save(user);
                 }
                 if (doesNotExist) {
                     info.setText("New user '" + username.getText() + "' was created");
@@ -195,21 +211,57 @@ public class GUI extends Application {
     }
 
     public Scene loadMainWindow() {
+        this.platformDao = new PlatformDao(database, loggedInUser);
+        try {
+            loggedInUser.setPlatforms(platformDao.findAll(null));
+        } catch (SQLException error) {
+            System.out.println(error.getMessage());
+        }
         BorderPane mainWindow = new BorderPane();
+        ListView<String> gameList = new ListView();
+        ListView<String> platformList = new ListView();
+        Label platformLabel = new Label("Platforms:");
+        Button newPlatformButton = new Button("Add a new platform");
+        Button removePlatformButton = new Button("Remove selected platform");
+        TextField newPlatformField = new TextField();
+        newPlatformField.setPromptText("new platform");
+        platformList.setPrefHeight(200);
+        platformList.setPrefWidth(200);
+        gameList.setPrefHeight(300);
+        gameList.setPrefWidth(350);
+        ObservableList<String> platforms = FXCollections.observableArrayList(loggedInUser.getPlatforms());
+        VBox platformElements = new VBox();
+        VBox gameElements = new VBox();
+        platformElements.getChildren().addAll(platformLabel, platformList, newPlatformField, newPlatformButton, removePlatformButton);
+        gameElements.getChildren().add(gameList);
+        newPlatformButton.setOnAction((event -> {
+            try {
+                Platform toBeSaved = new Platform(newPlatformField.getText(), 0);
+                if (!toBeSaved.getName().isEmpty()) {
+                    platformDao.save(toBeSaved);
+                    newPlatformField.clear();
+                    loggedInUser.setPlatforms(platformDao.findAll(null));
+                    platformList.setItems(FXCollections.observableArrayList(loggedInUser.getPlatforms()));
+                }
+            } catch (SQLException error) {
+                System.out.println(error.getMessage());
+            }
+        }));
+
+        platformList.setItems(platforms);
         this.logOut.setText("LOGOUT");
         this.logOut.setStyle("-fx-background-color: #DE5865;");
         mainWindow.setBottom(this.logOut);
+        mainWindow.setRight(gameElements);
+        mainWindow.setLeft(platformElements);
         Scene mainScene = new Scene(mainWindow);
         return mainScene;
     }
 
-    
-    
     public static void main(String[] args) throws SQLException {
         launch(args);
     }
-    
-    // Sulkee tietokannan. Ei vielä ilmoita, että ohjelman voi sulkea.
+
     @Override
     public void stop() {
         try {
@@ -217,6 +269,6 @@ public class GUI extends Application {
         } catch (SQLException e) {
             System.out.println("error closing database");
         }
-        
+
     }
 }

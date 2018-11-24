@@ -13,9 +13,9 @@ public class GameTest {
 
     @Before
     public void setUp() {
-        this.platform = new Platform("NES");
-        this.testGame = new Game("The Legend of Zelda", this.platform, Game.Condition.MINT, Game.Content.CIB);
-        this.testGame2 = new Game("Mr. Gimmick", this.platform, Game.Condition.NEAR_MINT, Game.Content.NIB);
+        this.platform = new Platform("NES", 1);
+        this.testGame = new Game("The Legend of Zelda", this.platform, Game.Condition.MINT, Game.Content.CIB, 0);
+        this.testGame2 = new Game("Mr. Gimmick", this.platform, Game.Condition.NEAR_MINT, Game.Content.NIB ,1);
     }
     
     @Test

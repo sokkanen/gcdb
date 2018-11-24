@@ -8,16 +8,23 @@ public class User {
     private String username;
     private int passHash;
     private List<Game> games;
-    private List<Platform> platforms;
+    private List<String> platforms;
+    private int id;
 
-    public User(String username, String password) {
+    public User(String username, String password, int id) {
+        this.id = id;
         this.username = username;
         this.passHash = generatePassHash(password);
+        this.platforms = new ArrayList<>();
+        this.games = new ArrayList<>();
     }
-    
-    public User(String username, int passhash) {
+
+    public User(String username, int passhash, int id) {
         this.username = username;
         this.passHash = passhash;
+        this.id = id;
+        this.platforms = new ArrayList<>();
+        this.games = new ArrayList<>();
     }
 
     public User(String username, String password, List<Game> games, List<Platform> platforms) {
@@ -44,37 +51,32 @@ public class User {
     }
 
     public boolean removeGame(Game game) {
-        try {
+        if (this.games.contains(game)) {
             this.games.remove(game);
             return true;
-        } catch (Exception e) {
+        } else {
             return false;
         }
     }
 
-    public void platform(Platform platform) {
-        this.platforms.add(platform);
-    }
-
-    public boolean removePlatform(Platform platform) {
-        try {
-            this.platforms.remove(platform);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    public void setPlatforms(List<String> lst) {
+        this.platforms = lst;
     }
 
     public List<Game> getGames() {
         return this.games;
     }
 
-    public List<Platform> getPlatforms() {
+    public List<String> getPlatforms() {
         return this.platforms;
     }
-    
+
     @Override
-    public String toString(){
-        return this.username + " " + this.passHash;
+    public String toString() {
+        return this.username + " " + this.passHash + " " + this.id;
+    }
+
+    public int getId() {
+        return this.id;
     }
 }
