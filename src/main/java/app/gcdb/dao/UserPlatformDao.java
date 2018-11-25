@@ -33,6 +33,8 @@ public class UserPlatformDao implements Dao<String, Object> {
             while (rsset.next()) {
                 lst.add(rsset.getString("name"));
             }
+            rsset.close();
+            connection.close();
         }
         return lst;
     }
@@ -40,7 +42,7 @@ public class UserPlatformDao implements Dao<String, Object> {
     @Override
     public boolean save(Object arg) throws SQLException {
         Platform pltfrm = (Platform) arg;
-        if (!findOne(arg).isEmpty()){
+        if (!findOne(arg).isEmpty()) {
             return false;
         }
         try (Connection conn = db.newConnection()) {
@@ -48,6 +50,8 @@ public class UserPlatformDao implements Dao<String, Object> {
             stmt.setInt(1, user.getId());
             stmt.setInt(2, pltfrm.getId());
             stmt.executeUpdate();
+            stmt.close();
+            conn.close();
             return true;
         } catch (SQLException error) {
             System.out.println(error.getMessage());
@@ -70,10 +74,11 @@ public class UserPlatformDao implements Dao<String, Object> {
             ResultSet rsset = stmt.executeQuery();
             String userAndPlatform = rsset.getInt("user_id") + rsset.getInt("platform_id") + "";
             rsset.close();
+            stmt.close();
             connection.close();
             return userAndPlatform;
-        } catch (SQLException error){
-            System.out.println("findone: " + error.getMessage());
+        } catch (SQLException error) {
+            System.out.println("findone: " + error.getMessage() + " " + error.getSQLState());
         }
         return "";
     }

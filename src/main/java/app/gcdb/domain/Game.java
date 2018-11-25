@@ -6,7 +6,6 @@ package app.gcdb.domain;
 public class Game implements Comparable<Game> {
 
     private String name;
-    private Platform platform;
     private int id;
 
     public enum Condition {
@@ -30,35 +29,26 @@ public class Game implements Comparable<Game> {
     }
     private Condition condition;
     private Content content;
+    private String comment;
 
-    public Game(String name, Platform platform, Condition cnd, Content cnt, int id) {
+    public Game(String name, Platform platform, Condition cnd, Content cnt, int id, String comment) {
         this.name = name;
-        this.platform = platform;
         this.condition = cnd;
         this.content = cnt;
         this.id = id;
+        this.comment = comment;
     }
 
     public Game(String name, Platform platform) {
         this.name = name;
-        this.platform = platform;
     }
 
     public String getName() {
         return name;
     }
 
-    public Platform getPlatform() {
-        return platform;
-    }
-    
     @Override
     public int compareTo(Game comparable) {
         return this.name.compareTo(comparable.name);
-    }
-
-    @Override
-    public String toString() {
-        return platform.getName() + ": " + this.name;
     }
 }

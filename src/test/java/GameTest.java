@@ -14,13 +14,8 @@ public class GameTest {
     @Before
     public void setUp() {
         this.platform = new Platform("NES", 1);
-        this.testGame = new Game("The Legend of Zelda", this.platform, Game.Condition.MINT, Game.Content.CIB, 0);
-        this.testGame2 = new Game("Mr. Gimmick", this.platform, Game.Condition.NEAR_MINT, Game.Content.NIB ,1);
-    }
-    
-    @Test
-    public void toStringWorksAsExpected(){
-        assertEquals("NES: The Legend of Zelda", testGame.toString());
+        this.testGame = new Game("The Legend of Zelda", this.platform, Game.Condition.MINT, Game.Content.CIB, 0, "");
+        this.testGame2 = new Game("Mr. Gimmick", this.platform, Game.Condition.NEAR_MINT, Game.Content.NIB ,1, "");
     }
     
     @Test
@@ -31,11 +26,6 @@ public class GameTest {
     @Test
     public void compareWorksAsExpected(){
         assertThat(this.testGame.compareTo(testGame2),greaterThan(0));
-    }
-    
-    @Test
-    public void getPlatformTest(){
-        assertEquals(this.platform, testGame.getPlatform());
     }
     
     @Test
