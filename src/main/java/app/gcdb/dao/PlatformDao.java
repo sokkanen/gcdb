@@ -34,7 +34,7 @@ public class PlatformDao implements Dao {
         Platform pltfrm = (Platform) arg;
         try (Connection connection = db.newConnection()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT name, id FROM Platform WHERE name = ?");
-            stmt.setString(1, pltfrm.getName());
+            stmt.setString(1, pltfrm.getName().trim().toUpperCase());
             ResultSet rsset = stmt.executeQuery();
             if (!rsset.next()) {
                 return null;
@@ -48,14 +48,14 @@ public class PlatformDao implements Dao {
         Platform pltfrm = (Platform) arg;
         if (findOne(arg) != null) {
             pltfrm = (Platform) findOne(arg);
-            userPlatform.save(pltfrm);
-            return true;
+            if (userPlatform.save(pltfrm)) {
+                return true;
+            }
+            return false;
         }
-
-        String toBeInserted = pltfrm.getName();
         try (Connection connection = db.newConnection()) {
             PreparedStatement stmt = connection.prepareStatement("INSERT INTO Platform(name) VALUES (?)");
-            stmt.setString(1, toBeInserted);
+            stmt.setString(1, pltfrm.getName().trim().toUpperCase());
             stmt.executeUpdate();
             pltfrm = (Platform) findOne(arg);
             userPlatform.save(pltfrm);
@@ -67,7 +67,7 @@ public class PlatformDao implements Dao {
 
     @Override
     public void delete(Object arg) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        userPlatform.delete(arg);
     }
 
 }

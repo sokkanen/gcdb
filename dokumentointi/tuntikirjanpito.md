@@ -11,4 +11,5 @@ päivä | aika | mitä tein
 16.11 | 1    | GUI:n init-toiminnallisuuden hionta
 24.11 | 6    | PlatformDao ja UserPlatformDao-luokat. Pelialustojen listaaminen. Checkstyle.
 25.11 | 2    | Bugifiksausta. Alustalistan toiminnallisuuden aloitus. Tietokantaan Game-taulu. JaCoCo kiroilua. 
-YHT   | 23
+26.11 | 1    | Lisätyn pelialustan poistomahdollisuus. Ohjelman sisäisen logiikan parataminen. Lisää testejä.
+YHT   | 24

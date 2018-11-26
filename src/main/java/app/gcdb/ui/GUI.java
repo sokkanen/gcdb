@@ -6,6 +6,8 @@ import app.gcdb.database.Database;
 import app.gcdb.domain.Platform;
 import app.gcdb.domain.User;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.collections.FXCollections;
@@ -42,6 +44,7 @@ public class GUI extends Application {
     private PlatformDao platformDao;
     private Database database;
     private User loggedInUser;
+    private Platform currentlySelected;
 
     @Override
     public void init() {
@@ -231,19 +234,30 @@ public class GUI extends Application {
         platformList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                System.out.println("Napsautit sitten " + platformList.getSelectionModel().getSelectedItem());
+                if (platformList.getSelectionModel().getSelectedItem() != null){
+                    currentlySelected = loggedInUser.getOneOfUsersPlatforms(platformList.getSelectionModel().getSelectedItem());
+                }
             }
         });
         Label platformLabel = new Label("Platforms:");
         Button newPlatformButton = new Button("Add a new platform");
         Button removePlatformButton = new Button("Remove selected platform");
+        removePlatformButton.setOnAction((event ->{
+            try {
+                platformDao.delete(currentlySelected);
+                loggedInUser.setPlatforms(platformDao.findAll(null));
+                platformList.setItems(FXCollections.observableArrayList(loggedInUser.getViewablePlatforms()));
+            } catch (SQLException error) {
+                System.out.println(error.getMessage());
+            }
+        }));
         TextField newPlatformField = new TextField();
         newPlatformField.setPromptText("new platform");
         platformList.setPrefHeight(200);
         platformList.setPrefWidth(200);
         gameList.setPrefHeight(300);
         gameList.setPrefWidth(350);
-        ObservableList<String> platforms = FXCollections.observableArrayList(loggedInUser.getPlatforms());
+        ObservableList<String> platforms = FXCollections.observableArrayList(loggedInUser.getViewablePlatforms());
         VBox platformElements = new VBox();
         VBox gameElements = new VBox();
         platformElements.getChildren().addAll(platformLabel, platformList, newPlatformField, newPlatformButton, removePlatformButton);
@@ -255,7 +269,7 @@ public class GUI extends Application {
                     platformDao.save(toBeSaved);
                     newPlatformField.clear();
                     loggedInUser.setPlatforms(platformDao.findAll(null));
-                    platformList.setItems(FXCollections.observableArrayList(loggedInUser.getPlatforms()));
+                    platformList.setItems(FXCollections.observableArrayList(loggedInUser.getViewablePlatforms()));
                 }
             } catch (SQLException error) {
                 System.out.println(error.getMessage());

@@ -12,7 +12,7 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class UserPlatformDao implements Dao<String, Object> {
+public class UserPlatformDao implements Dao<Platform, Object> {
 
     private User user;
     private Database db;
@@ -23,15 +23,15 @@ public class UserPlatformDao implements Dao<String, Object> {
     }
 
     @Override
-    public List<String> findAll(Object arg) throws SQLException {
-        List<String> lst = new ArrayList<>();
+    public List<Platform> findAll(Object arg) throws SQLException {
+        List<Platform> lst = new ArrayList<>();
         try (Connection connection = db.newConnection()) {
-            PreparedStatement stmt = connection.prepareStatement("SELECT Platform.name AS name FROM Platform, UserPlatform "
+            PreparedStatement stmt = connection.prepareStatement("SELECT Platform.name AS name, Platform.id AS id FROM Platform, UserPlatform "
                     + "WHERE UserPlatform.user_id = ? AND UserPlatform.platform_id = Platform.id");
             stmt.setInt(1, user.getId());
             ResultSet rsset = stmt.executeQuery();
             while (rsset.next()) {
-                lst.add(rsset.getString("name"));
+                lst.add(new Platform(rsset.getString("name"), rsset.getInt("id")));
             }
             rsset.close();
             connection.close();
@@ -42,7 +42,7 @@ public class UserPlatformDao implements Dao<String, Object> {
     @Override
     public boolean save(Object arg) throws SQLException {
         Platform pltfrm = (Platform) arg;
-        if (!findOne(arg).isEmpty()) {
+        if (findIfAlreadyListed(arg)) {
             return false;
         }
         try (Connection conn = db.newConnection()) {
@@ -61,25 +61,40 @@ public class UserPlatformDao implements Dao<String, Object> {
 
     @Override
     public void delete(Object arg) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Platform toBeRemoved = (Platform) arg;
+        try (Connection connection = db.newConnection()) {
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM UserPlatform "
+                    + "WHERE user_id = ? AND platform_id = ?");
+            stmt.setInt(1, user.getId());
+            stmt.setInt(2, toBeRemoved.getId());
+            stmt.executeUpdate();
+            connection.close();
+        }
     }
 
-    @Override
-    public String findOne(Object arg) throws SQLException {
+    public boolean findIfAlreadyListed(Object arg) throws SQLException {
         Platform pltfrm = (Platform) arg;
         try (Connection connection = db.newConnection()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT user_id, platform_id FROM UserPlatform WHERE user_id = ? AND platform_id = ?");
             stmt.setInt(1, user.getId());
             stmt.setInt(2, pltfrm.getId());
             ResultSet rsset = stmt.executeQuery();
-            String userAndPlatform = rsset.getInt("user_id") + rsset.getInt("platform_id") + "";
+            int userid = rsset.getInt("user_id");
+            int platformid = rsset.getInt("platform_id");
             rsset.close();
             stmt.close();
             connection.close();
-            return userAndPlatform;
+            if (userid != 0 && platformid != 0) {
+                return true;
+            }
+            return false;
         } catch (SQLException error) {
-            System.out.println("findone: " + error.getMessage() + " " + error.getSQLState());
         }
-        return "";
+        return false;
+    }
+
+    @Override
+    public Platform findOne(Object arg) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

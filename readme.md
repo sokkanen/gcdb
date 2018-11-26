@@ -9,6 +9,8 @@ ja näin helpottaa kokoelmansa kirjanpitoa. Sovellus tukee useaa rekisteröityny
 
 [Tuntikirjanpito](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/tuntikirjanpito.md)
 
+[Arkkitehtuuri](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/arkkitehtuuri.md)
+
 ### Komentorivitoiminnot
 #### Testaus
 Testit suoritetaan komennolla
@@ -24,3 +26,10 @@ Ohjelma suoritetaan komennolla
 ```
 mvn compile exec:java -Dexec.mainClass=app.gcdb.ui.GUI
 ```
+
+#### Checkstyle
+[checkstyle.xml](https://github.com/sokkanen/ot-harjoitustyo/blob/master/checkstyle.xml) mukaiset tarkastukset suoritetaan komennolla
+```
+mvn jxr:jxr checkstyle:checkstyle
+```
+

@@ -8,7 +8,7 @@ public class User {
     private String username;
     private int passHash;
     private List<Game> games;
-    private List<String> platforms;
+    private List<Platform> platforms;
     private int id;
 
     public User(String username, String password, int id) {
@@ -59,7 +59,16 @@ public class User {
         }
     }
 
-    public void setPlatforms(List<String> lst) {
+    public Platform getOneOfUsersPlatforms(String searchstring) {
+        for (int i = 0; i < this.platforms.size(); i++) {
+            if (this.platforms.get(i).getName().equals(searchstring)) {
+                return this.platforms.get(i);
+            }
+        }
+        return null;
+    }
+
+    public void setPlatforms(List<Platform> lst) {
         this.platforms = lst;
     }
 
@@ -67,8 +76,16 @@ public class User {
         return this.games;
     }
 
-    public List<String> getPlatforms() {
+    public List<Platform> getPlatforms() {
         return this.platforms;
+    }
+
+    public List<String> getViewablePlatforms() {
+        List<String> platformStrings = new ArrayList<>();
+        for (int i = 0; i < this.platforms.size(); i++) {
+            platformStrings.add(this.platforms.get(i).getName());
+        }
+        return platformStrings;
     }
 
     @Override

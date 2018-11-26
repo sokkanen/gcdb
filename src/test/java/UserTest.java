@@ -28,11 +28,11 @@ public class UserTest {
         int testHash = "YsiViisEiUnohdu".hashCode();
         assertEquals(testUser.getPassHash(), testHash);
     }
-    
+
     @Test
     public void setAndGetPlatformsWork() {
-        List<String> testList = new ArrayList<>();
-        testList.add(testPlatform.getName());
+        List<Platform> testList = new ArrayList<>();
+        testList.add(testPlatform);
         testUser.setPlatforms(testList);
         assertEquals(testUser.getPlatforms(), testList);
     }
@@ -59,15 +59,37 @@ public class UserTest {
         testUser.addGame(testGame);
         assertEquals(testUser.removeGame(testGame), true);
     }
-    
+
     @Test
     public void removingGameThatDoesNotExistWorks() {
         assertFalse(testUser.removeGame(testGame));
     }
-    
+
     @Test
     public void toStringWorks() {
         assertEquals(testUser.toString(), "Erkki 1164756051 1");
     }
 
+    @Test
+    public void getOnePlatformWorks() {
+        List<Platform> platforms = new ArrayList<>();
+        platforms.add(testPlatform);
+        testUser.setPlatforms(platforms);
+        assertEquals(testUser.getOneOfUsersPlatforms("NES"), testPlatform);
+    }
+
+    @Test
+    public void getOnePlatformThatDoesNotExistWorks() {
+        List<Platform> platforms = new ArrayList<>();
+        testUser.setPlatforms(platforms);
+        assertEquals(testUser.getOneOfUsersPlatforms("NES"), null);
+    }
+
+    @Test
+    public void getViewablePlatformsWorks() {
+        List<Platform> platforms = new ArrayList<>();
+        platforms.add(testPlatform);
+        testUser.setPlatforms(platforms);
+        assertEquals(testUser.getViewablePlatforms().get(0), "NES");
+    }
 }
