@@ -11,6 +11,9 @@ ja näin helpottaa kokoelmansa kirjanpitoa. Sovellus tukee useaa rekisteröityny
 
 [Arkkitehtuuri](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/arkkitehtuuri.md)
 
+### Releaset
+[Viikko 5](https://github.com/sokkanen/ot-harjoitustyo/releases)
+
 ### Komentorivitoiminnot
 #### Testaus
 Testit suoritetaan komennolla
