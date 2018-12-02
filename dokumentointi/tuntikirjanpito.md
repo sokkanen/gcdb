@@ -12,4 +12,8 @@ päivä | aika | mitä tein
 24.11 | 6    | PlatformDao ja UserPlatformDao-luokat. Pelialustojen listaaminen. Checkstyle.
 25.11 | 2    | Bugifiksausta. Alustalistan toiminnallisuuden aloitus. Tietokantaan Game-taulu. JaCoCo kiroilua. 
 26.11 | 1    | Lisätyn pelialustan poistomahdollisuus. Ohjelman sisäisen logiikan parataminen. Lisää testejä.
-YHT   | 24
+29.11 | 3    | Pelitoiminnallisuuden rakentaminen ja hionta. Logiikan parannukset.
+30.11 | 4    | Pelit listalle näkyviin. GcdbService-luokka. Vastuut GUI->GcdbService.
+01.12 | 2    | Dokumentoinnin päivitys. Pelinäkymän hahmotelma.
+02.12 | 3    | Pelin poistamismahdollisuus. GcdbServicen testit. JAR:n luominen. 
+YHT   | 36

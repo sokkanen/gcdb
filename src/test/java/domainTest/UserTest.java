@@ -1,3 +1,5 @@
+package domainTest;
+
 
 import app.gcdb.domain.Game;
 import app.gcdb.domain.Platform;
@@ -20,7 +22,7 @@ public class UserTest {
         this.testUser = new User("Erkki", "YsiViisEiUnohdu", 1);
         this.testUser2 = new User("Japi", 123456789, 1);
         testPlatform = new Platform("NES", 0);
-        testGame = new Game("SMB3", testPlatform, Game.Condition.MINT, Game.Content.CIB, 0, "");
+        testGame = new Game("SMB3", testPlatform.getId(), 9, 5, 0, "");
     }
 
     @Test

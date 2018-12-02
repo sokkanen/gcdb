@@ -26,10 +26,15 @@ Ohjelma suoritetaan komennolla
 ```
 mvn compile exec:java -Dexec.mainClass=app.gcdb.ui.GUI
 ```
+#### Suoritettavan JAR:n generointi
+target -hakemistoon luodaan GCDB-1.0-SNAPSHOT.jar komennolla
+```
+mvn package
+```
 
 #### Checkstyle
 [checkstyle.xml](https://github.com/sokkanen/ot-harjoitustyo/blob/master/checkstyle.xml) mukaiset tarkastukset suoritetaan komennolla
 ```
 mvn jxr:jxr checkstyle:checkstyle
 ```
-
+Mahdolliset virheilmoitukset ovat tarkasteltavissa /target/site/checkstyle.html -tiedostosta.

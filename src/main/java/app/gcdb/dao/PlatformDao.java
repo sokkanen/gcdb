@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class PlatformDao implements Dao {
+public class PlatformDao implements Dao<Platform, Platform> {
 
     private Database db;
     private User user;
@@ -24,14 +24,17 @@ public class PlatformDao implements Dao {
         this.userPlatform = new UserPlatformDao(user, db);
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
-    public List findAll(Object arg) throws SQLException {
+    public List findAll(Platform arg) throws SQLException {
         return userPlatform.findAll(arg);
     }
 
     @Override
-    public Object findOne(Object arg) throws SQLException {
-        Platform pltfrm = (Platform) arg;
+    public Platform findOne(Platform pltfrm) throws SQLException {
         try (Connection connection = db.newConnection()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT name, id FROM Platform WHERE name = ?");
             stmt.setString(1, pltfrm.getName().trim().toUpperCase());
@@ -44,7 +47,7 @@ public class PlatformDao implements Dao {
     }
 
     @Override
-    public boolean save(Object arg) throws SQLException {
+    public boolean save(Platform arg) throws SQLException {
         Platform pltfrm = (Platform) arg;
         if (findOne(arg) != null) {
             pltfrm = (Platform) findOne(arg);
@@ -66,8 +69,8 @@ public class PlatformDao implements Dao {
     }
 
     @Override
-    public void delete(Object arg) throws SQLException {
-        userPlatform.delete(arg);
+    public boolean delete(Platform arg) throws SQLException {
+        return userPlatform.delete(arg);
     }
 
 }

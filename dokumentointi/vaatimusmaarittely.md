@@ -12,29 +12,30 @@ Ohjelman ensimmäisessä versiossa on vain peruskäyttäjiä.
 
 ### Käyttöliittymäluonnos ###
 
-Ensimmäisessä vaiheessa sovellus koostuu kolmesta näkymästä. Myöhempiin versioihin on tarkoitus lisätä pelinäkymä.
-
-![](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/kuvat/uidraft.JPG)
+Sovellus koostuu kolmesta näkymästä. Nämä ovat kirjautumisnäkymä, uuden käyttäjän lisäämisnäkymä ja päänäkymä.
 
 ### Perusversion tarjoama toiminnallisuus ###
 
 #### Ennen kirjautumista ###
 
 * Käyttäjä voi luoda salasanalla suojatun käyttäjätunnuksen
-	* Käyttäjätunnuksen ja salasanan tulee olla vähintään 5 merkkiä pitkiä
+	* Käyttäjätunnuksen tulee olla vähintään 4 ja salasanan vähintään 5 merkkiä pitkiä. Mikäli
+	jompikumpi ehdoista ei toteudu, ilmoittaa järjestelmä virheestä.
 * Käyttäjä voi kirjautua järjestelmään käyttäjätunnuksella ja salasanalla
-	* Jos käyttätunnusta ei ole luotu, järjestelmä ilmoittaa virheestä
+	* Jos käyttätunnusta ei ole luotu tai salanasa on virheellinen, ilmoittaa järjestelmä virheestä.
 
 #### Kirjautumisen jälkeen ###
 
 * Kunkin käyttäjän sisältö näkyy vain kyseiselle käyttäjälle
 
 * Käyttäjä näkee lisäämänsä pelialustat
-	* Käyttäjä voi lisätä pelialustan
-* Käyttäjä voi lisätä pelialustalle pelin
+* Käyttäjä voi lisätä pelialustan
 * Pelialustan valitsemalla, käyttäjä näkee alustalle lisätyt pelit
 
+* Käyttäjä voi lisätä pelialustalle pelin
+* Kokoelman pelit ovat yksilöitä, joten käyttäjä voi lisätä useamman saman pelin.
 * Käyttäjä voi poistaa pelin
+* Pelin valitsemalla käyttäjä näkee syöttämänsä pelin tiedot (nimeke, kuntoluokka, sisältö ja kommentti)
 * Käyttäjä voi poistaa pelialustan
 
 * Käyttäjä voi kirjautua ulos järjestelmästä
@@ -43,8 +44,6 @@ Ensimmäisessä vaiheessa sovellus koostuu kolmesta näkymästä. Myöhempiin ve
 
 Perusversion julkaisun jälkeen ohjelmaa on tarkoitus täydentää seuraavilla ominaisuuksilla
 
-* Järjestelmään lisätään pelinäkymä, jossa yksittäisen pelin tietoja voidaan tarkastella ja muokata
-* Peliin on mahdollista lisätä kommenttikenttään tarkentavia tietoja käyttäjän omistamasta pelistä (esim. kuntoluokitus)
 * Peliin voi linkata pelistä kertovan nettisivun (esim. Wikipedia)
 * Järjestelmä hakee pelin kansikuvan automaattisesti ja näyttää sen kulloinkin valitun pelin vieressä
-
+* Vapaa keräilykohteen ja kategorisoinnin valinta.

@@ -1,3 +1,5 @@
+package domainTest;
+
 import app.gcdb.domain.Game;
 import app.gcdb.domain.Platform;
 import org.junit.Before;
@@ -14,8 +16,8 @@ public class GameTest {
     @Before
     public void setUp() {
         this.platform = new Platform("NES", 1);
-        this.testGame = new Game("The Legend of Zelda", this.platform, Game.Condition.MINT, Game.Content.CIB, 0, "");
-        this.testGame2 = new Game("Mr. Gimmick", this.platform, Game.Condition.NEAR_MINT, Game.Content.NIB ,1, "");
+        this.testGame = new Game("The Legend of Zelda", platform.getId(), 9, 5, 0, "");
+        this.testGame2 = new Game("Mr. Gimmick", platform.getId(), 9, 9 ,1, "");
     }
     
     @Test

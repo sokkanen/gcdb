@@ -1,3 +1,5 @@
+package daoTest;
+
 import app.gcdb.dao.PlatformDao;
 import app.gcdb.database.Database;
 import app.gcdb.domain.Platform;
@@ -21,7 +23,7 @@ public class PlatformDaoTest {
     
     @Before
     public void setUp() throws SQLException {
-        this.db = new Database("jdbc:sqlite:testdb.db");
+        this.db = new Database("jdbc:sqlite::resource:testdb.db");
         this.testUser = new User("JohnDoe", 1164756051, 1);
         this.testDao = new PlatformDao(db, testUser);
         this.testPlatform = new Platform("NES", 1);

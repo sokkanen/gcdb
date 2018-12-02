@@ -12,7 +12,7 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class UserPlatformDao implements Dao<Platform, Object> {
+public class UserPlatformDao implements Dao<Platform, Platform> {
 
     private User user;
     private Database db;
@@ -23,7 +23,7 @@ public class UserPlatformDao implements Dao<Platform, Object> {
     }
 
     @Override
-    public List<Platform> findAll(Object arg) throws SQLException {
+    public List<Platform> findAll(Platform arg) throws SQLException {
         List<Platform> lst = new ArrayList<>();
         try (Connection connection = db.newConnection()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT Platform.name AS name, Platform.id AS id FROM Platform, UserPlatform "
@@ -40,9 +40,8 @@ public class UserPlatformDao implements Dao<Platform, Object> {
     }
 
     @Override
-    public boolean save(Object arg) throws SQLException {
-        Platform pltfrm = (Platform) arg;
-        if (findIfAlreadyListed(arg)) {
+    public boolean save(Platform pltfrm) throws SQLException {
+        if (findIfAlreadyListed(pltfrm)) {
             return false;
         }
         try (Connection conn = db.newConnection()) {
@@ -60,8 +59,7 @@ public class UserPlatformDao implements Dao<Platform, Object> {
     }
 
     @Override
-    public void delete(Object arg) throws SQLException {
-        Platform toBeRemoved = (Platform) arg;
+    public boolean delete(Platform toBeRemoved) throws SQLException {
         try (Connection connection = db.newConnection()) {
             PreparedStatement stmt = connection.prepareStatement("DELETE FROM UserPlatform "
                     + "WHERE user_id = ? AND platform_id = ?");
@@ -69,11 +67,11 @@ public class UserPlatformDao implements Dao<Platform, Object> {
             stmt.setInt(2, toBeRemoved.getId());
             stmt.executeUpdate();
             connection.close();
+            return true;
         }
     }
 
-    public boolean findIfAlreadyListed(Object arg) throws SQLException {
-        Platform pltfrm = (Platform) arg;
+    public boolean findIfAlreadyListed(Platform pltfrm) throws SQLException {
         try (Connection connection = db.newConnection()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT user_id, platform_id FROM UserPlatform WHERE user_id = ? AND platform_id = ?");
             stmt.setInt(1, user.getId());
@@ -94,7 +92,7 @@ public class UserPlatformDao implements Dao<Platform, Object> {
     }
 
     @Override
-    public Platform findOne(Object arg) throws SQLException {
+    public Platform findOne(Platform arg) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

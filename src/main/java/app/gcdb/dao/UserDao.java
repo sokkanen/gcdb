@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class UserDao implements Dao {
+public class UserDao implements Dao<User, String> {
 
     private Database db;
 
@@ -17,11 +17,10 @@ public class UserDao implements Dao {
     }
 
     @Override
-    public Object findOne(Object arg) throws SQLException {
-        User user = (User) arg;
+    public User findOne(String searchString) throws SQLException {
         try (Connection connection = db.newConnection()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT username, passhash, id FROM User WHERE username = ?");
-            stmt.setString(1, user.getUsername());
+            stmt.setString(1, searchString);
             ResultSet rsset = stmt.executeQuery();
             if (!rsset.next()) {
                 return null;
@@ -31,10 +30,8 @@ public class UserDao implements Dao {
         }
     }
 
-    @Override
-    public boolean save(Object arg) throws SQLException {
-        User user = (User) arg;
-        if (findOne(user) != null) {
+    public boolean save(User user) throws SQLException {
+        if (findOne(user.getUsername()) != null) {
             return false;
         }
 
@@ -48,12 +45,17 @@ public class UserDao implements Dao {
     }
 
     @Override
-    public void delete(Object arg) throws SQLException { // Toteutus ylläpitäjän toteutuksen yhteydessä.
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<User> findAll(String arg) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List findAll(Object arg) throws SQLException {
-        throw new UnsupportedOperationException("Not implemented on this class.");
+    public boolean delete(String arg) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean save(String arg) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

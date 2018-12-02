@@ -11,5 +11,5 @@ public interface Dao<X, T> {
 
     boolean save(T arg) throws SQLException;
 
-    void delete(T arg) throws SQLException;
+    boolean delete(T arg) throws SQLException;
 }

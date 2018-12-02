@@ -1,6 +1,7 @@
 package app.gcdb.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class User {
@@ -35,7 +36,10 @@ public class User {
     }
 
     public int generatePassHash(String passWord) {
-        return passWord.hashCode();
+        if (passWord.length() > 4) {
+            return passWord.hashCode();
+        }
+        return 0;
     }
 
     public String getUsername() {
@@ -68,12 +72,31 @@ public class User {
         return null;
     }
 
+    public Game getOneOfUsersGames(int index) {
+        return this.games.get(index);
+    }
+
     public void setPlatforms(List<Platform> lst) {
         this.platforms = lst;
     }
 
+    public void setGames(List<Game> lst) {
+        Collections.sort(lst);
+        this.games = lst;
+    }
+
     public List<Game> getGames() {
         return this.games;
+    }
+
+    public List<Game> getGamesByPlatform(Platform platform) {
+        List<Game> plGames = new ArrayList<>();
+        for (int i = 0; i < games.size(); i++) {
+            if (games.get(i).getPlatform() == platform.getId()) {
+                plGames.add(games.get(i));
+            }
+        }
+        return plGames;
     }
 
     public List<Platform> getPlatforms() {
@@ -86,6 +109,16 @@ public class User {
             platformStrings.add(this.platforms.get(i).getName());
         }
         return platformStrings;
+    }
+
+    public List<String> getViewableGames(Platform platform) {
+        List<String> gameStrings = new ArrayList<>();
+        for (int i = 0; i < this.games.size(); i++) {
+            if (platform.getId() == this.games.get(i).getPlatform()) {
+                gameStrings.add(this.games.get(i).getName());
+            }
+        }
+        return gameStrings;
     }
 
     @Override

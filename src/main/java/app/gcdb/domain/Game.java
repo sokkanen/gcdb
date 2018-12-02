@@ -8,43 +8,59 @@ public class Game implements Comparable<Game> {
     private String name;
     private int id;
 
-    public enum Condition {
-        MINT,
-        NEAR_MINT,
-        EXCELLENT,
-        VERY_GOOD,
-        GOOD,
-        FAIR,
-        POOR,
-        NOT_DEFINED;
-    }
-
-    public enum Content {
-        NIB,
-        CIB,
-        CB,
-        CI,
-        C,
-        NOT_DEFINED;
-    }
-    private Condition condition;
-    private Content content;
+    // Pelin kunto 1-10 GEM_MINT, MINT, NEAR_MINT, EXCELLENT, VERY_GOOD, GOOD, FAIR, POOR, VERY_POOR, NOT_DEFINED
+    // Sisältö 1-6 NIB, CIB, CB, CI, C, NOT_DEFINED;
+    private int condition;
+    private int content;
     private String comment;
+    private int platform;
 
-    public Game(String name, Platform platform, Condition cnd, Content cnt, int id, String comment) {
+    public Game(String name, int platform, int condition, int content, int id, String comment) {
         this.name = name;
-        this.condition = cnd;
-        this.content = cnt;
+        this.platform = platform;
+        this.condition = condition;
+        this.content = content;
         this.id = id;
         this.comment = comment;
     }
 
-    public Game(String name, Platform platform) {
+    public Game(String name, int condition, int content, String comment) {
         this.name = name;
+        this.condition = condition;
+        this.content = content;
+        this.comment = comment;
+    }
+
+    public Game(int id) {
+        this.id = id;
+    }
+
+    public int getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(int platform) {
+        this.platform = platform;
     }
 
     public String getName() {
         return name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getCondition() {
+        return condition;
+    }
+
+    public int getContent() {
+        return content;
+    }
+
+    public String getComment() {
+        return comment;
     }
 
     @Override
