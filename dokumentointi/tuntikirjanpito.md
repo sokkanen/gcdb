@@ -15,5 +15,5 @@ päivä | aika | mitä tein
 29.11 | 3    | Pelitoiminnallisuuden rakentaminen ja hionta. Logiikan parannukset.
 30.11 | 4    | Pelit listalle näkyviin. GcdbService-luokka. Vastuut GUI->GcdbService.
 01.12 | 2    | Dokumentoinnin päivitys. Pelinäkymän hahmotelma.
-02.12 | 3    | Pelin poistamismahdollisuus. GcdbServicen testit. JAR:n luominen. 
-YHT   | 36
+02.12 | 4    | Pelin poistamismahdollisuus. GcdbServicen testit. JAR:n luominen. Dokumentaation päivitys
+YHT   | 37
