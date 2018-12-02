@@ -1,6 +1,6 @@
-#Arkkitehtuurikuvaus
+# Arkkitehtuurikuvaus
 
-##Rakenne
+## Rakenne
 
 Ohjelman luokkakaavio on seuraava:
 
@@ -13,7 +13,7 @@ Ohjelma jakautuu neljään pakkaukseen:
 sekä ohjelmalogiikasta vastaavan GcdbService -luokan.
 * app.gcdb.ui sisältää käyttöliittymästä vastaavan GUI-luokan.
 
-##Käyttöliittymä
+## Käyttöliittymä
 
 Käyttöliittymä sisältää neljä näkymää:
 * Kirjautuminen
@@ -30,7 +30,7 @@ suorittamiseen GcdbService-luokan metodeja.
 Sovellus ottaa tietokantayhteyden jokaisen tehdyn muutoksen päivittämiseksi. Ohjelman sisäiset listat ovat
 näin ollen jatkuvasti ajantasalla. Näin ollen esimerkiksi ohjelman sammuttaminen ei kumoa viimeisiä muutoksia.
 
-##Tietojen pysyväistallennus
+## Tietojen pysyväistallennus
 
 Pakkauksen app.gcdb.dao -luokat vastaavat käyttäjien, alustojen ja pelien tallentamisesta tietokantaan. 
 Tietokanta sisältää lisäksi UserPlatform -toiminnallisuuden, joka yhdistää käyttäjän pelialustoihin.
@@ -47,22 +47,22 @@ Gcdb.db sisältää seuraavat tietokantataulut:
 * Game(id, user_id, platform_id, name, condition, content, comment)
 * UserPlatform(user_id, platform_id)
 
-##Päätoiminnallisuudet
+## Päätoiminnallisuudet
 
-###Sisäänkirjautuminen
+### Sisäänkirjautuminen
 
 ![loginsequence](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/kuvat/loginsequence.jpg)
 
-###Uuden käyttäjän luominen
+### Uuden käyttäjän luominen
 
-###Pelialustan lisääminen
+### Pelialustan lisääminen
 
-###Pelin lisääminen
+### Pelin lisääminen
 
-###Uloskirjautuminen
+### Uloskirjautuminen
 
-##Ohjelman rakenteeseen jääneet heikkoudet
-###Käyttöliittymä
+## Ohjelman rakenteeseen jääneet heikkoudet
+### Käyttöliittymä
 
 Vaikka sovelluslogiikka on pyritty erottamaan käyttöliittymästä, on käyttöliittymä melko massiivinen. 
 Tämän epäkohdan voisi korjata käyttämällä FXML-määrittelyä.
