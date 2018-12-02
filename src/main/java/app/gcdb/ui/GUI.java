@@ -102,7 +102,7 @@ public class GUI extends Application {
         closeProgram.setOnAction((event) -> {
             stop();
             label.setText("You can now close the program");
-            label.setFont(Font.font("Cambria", 32));
+            label.setFont(Font.font("Manjari Bold", 32));
             label.setTextFill(Color.rgb(66, 194, 244));
             signInWindow.getChildren().removeAll(signInElements, usernameAndPassword);
             signInWindow.setCenter(label);
@@ -216,7 +216,7 @@ public class GUI extends Application {
 
         ListView<String> gameList = new ListView();
         Label gameLabel = new Label("Games");
-        gameLabel.setFont(Font.font("Cambria", 20));
+        gameLabel.setFont(Font.font("Manjari Bold", 20));
         gameList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -228,9 +228,10 @@ public class GUI extends Application {
         });
         ListView<String> platformList = new ListView();
         Label platformLabel = new Label("Platforms:");
-        platformLabel.setFont(Font.font("Cambria", 20));
+        platformLabel.setFont(Font.font("Manjari Bold", 20));
         Button newPlatformButton = new Button("Click here to add");
         Label addNewPlatformLabel = new Label("Add a new platform");
+        addNewPlatformLabel.setFont(Font.font("Manjari Bold", 20));
         addNewPlatformLabel.setPadding(new Insets(10));
         Button removePlatformButton = new Button("Remove selected platform");
         TextField newPlatformField = new TextField();
@@ -258,6 +259,7 @@ public class GUI extends Application {
         ObservableList<String> gameContent = FXCollections.observableArrayList("Not defined", "C", "CI", "CB", "CIB", "NIB");
         ComboBox gameContentDrop = new ComboBox(gameContent);
         Label addNewGameLabel = new Label("Add a new game:");
+        addNewGameLabel.setFont(Font.font("Manjari Bold", 20));
         addNewGameLabel.setPadding(new Insets(10));
         TextField newGameTextField = new TextField();
         newGameTextField.setPromptText("title");
@@ -289,9 +291,13 @@ public class GUI extends Application {
 
         GridPane AddgameElements = new GridPane();
         Label title = new Label("Title:");
+        title.setFont(Font.font("Manjari Bold", 15));
         Label condition = new Label("Condition:");
+        condition.setFont(Font.font("Manjari Bold", 15));
         Label content = new Label("Content:");
+        content.setFont(Font.font("Manjari Bold", 15));
         Label comments = new Label("Comment:");
+        comments.setFont(Font.font("Manjari Bold", 15));
         VBox gameElements = new VBox();
         gameList.setPrefHeight(300);
         gameList.setPrefWidth(450);
@@ -327,13 +333,13 @@ public class GUI extends Application {
         gameView.setPrefSize(500, 200);
         Label condition = new Label("Game condition: " + gcdbService.intToCondition(game.getCondition()));
         Label contents = new Label("Game contents: " +  gcdbService.intToContent(game.getContent()));
-        contents.setFont(Font.font("Cambria", 25));
-        condition.setFont(Font.font("Cambria", 25));
+        contents.setFont(Font.font("Manjari Bold", 25));
+        condition.setFont(Font.font("Manjari Bold", 25));
         additionalInfo.getChildren().addAll(condition, contents);
         Label name = new Label(gcdbService.getCurrentlySelectedPlatform().getName() + ": " + game.getName());
-        name.setFont(Font.font("Cambria", 32));
+        name.setFont(Font.font("Manjari Bold", 32));
         Label comments = new Label(game.getComment());
-        comments.setFont(Font.font("Cambria", 18));
+        comments.setFont(Font.font("Manjari Bold", 18));
         comments.wrapTextProperty();
         comments.setPrefWidth(600);
         gameView.setTop(name);

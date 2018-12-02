@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.text.Font;
 
 public class GcdbService {
 
@@ -94,7 +95,7 @@ public class GcdbService {
     public String getLoggedInUser() {
         return loggedInUser.getUsername();
     }
-    
+
     public void setCurrentlySelectedPlatform(Platform platform) {
         this.currentlySelectedPlatform = platform;
     }
