@@ -31,10 +31,6 @@ sisältämiin tietoihin Dao-pakkauksen luokkien kautta. GcdbService tuntee kullo
 ja kulloinkin GUI:lla valittuna olevan pelialustan (Platform). GcdbService luo kunkin sisäänkirjautumisen yhteydessä
 sisäänkirjautuneelle käyttäjälle (User) omat PlatformDao ja GameDao -oliot.
 
-Ohjelman luokkakaavio on seuraava:
-
-![luokkakaavio](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/kuvat/arkkitehtuuri.jpg)
-
 Ohjelma jakautuu neljään pakkaukseen:
 * app.gcdb.dao sisältää SQLITE-tietokannan hallintaa suorittavat DAO-luokat
 * app.gcdb.database sisältää tietokantayhteyden hallintaa suorittavan Database-luokan
@@ -44,7 +40,7 @@ ohjelmalogiikasta vastaavan GcdbService -luokan sekä GameContent- ja GameCondit
 
 Ohjelman pakkauskaavio on seuraava:
 
-![pakkauskaavio](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/kuvat/classdiagram.jpg
+![pakkauskaavio](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/kuvat/classdiagram.jpg)
 
 ## Tietojen pysyväistallennus
 
