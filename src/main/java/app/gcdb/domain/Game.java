@@ -1,19 +1,28 @@
 package app.gcdb.domain;
 
 /**
- * Peliolio, joka sisältää pelin nimen, alustan, kunnon ja sisällön.
+ * Game-luokalla kuvataan pelejä. Muuttujina id, nimi, alusta, kunto, alue ja kommentti.
  */
 public class Game implements Comparable<Game> {
 
     private String name;
     private int id;
 
-    // Pelin kunto 1-10 GEM_MINT, MINT, NEAR_MINT, EXCELLENT, VERY_GOOD, GOOD, FAIR, POOR, VERY_POOR, NOT_DEFINED
-    // Sisältö 1-6 NIB, CIB, CB, CI, C, NOT_DEFINED;
     private int condition;
     private int content;
     private String comment;
     private int platform;
+    private String region;
+
+    public Game(String name, int platform, int condition, int content, int id, String region, String comment) {
+        this.name = name;
+        this.platform = platform;
+        this.condition = condition;
+        this.content = content;
+        this.id = id;
+        this.comment = comment;
+        this.region = region;
+    }
 
     public Game(String name, int platform, int condition, int content, int id, String comment) {
         this.name = name;
@@ -22,17 +31,23 @@ public class Game implements Comparable<Game> {
         this.content = content;
         this.id = id;
         this.comment = comment;
+        this.region = "";
     }
 
-    public Game(String name, int condition, int content, String comment) {
+    public Game(String name, int condition, int content, String region, String comment) {
         this.name = name;
         this.condition = condition;
         this.content = content;
+        this.region = region;
         this.comment = comment;
     }
 
     public Game(int id) {
         this.id = id;
+    }
+
+    public String getRegion() {
+        return region;
     }
 
     public int getPlatform() {
@@ -63,6 +78,14 @@ public class Game implements Comparable<Game> {
         return comment;
     }
 
+    /**
+     * Metodi vertaa kahta Game-oliota nimien perusteella.
+     *
+     * @param comparable verrattava Game-olio.
+     *
+     * @return Palauttaa -1,0 tai 1 riippuen verrattavien keskenäisestä
+     * järjestyksestä.
+     */
     @Override
     public int compareTo(Game comparable) {
         return this.name.compareTo(comparable.name);

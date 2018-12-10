@@ -32,7 +32,7 @@ public class GameDao implements Dao<Game, Game> {
             stmt.setInt(1, user.getId());
             ResultSet rsset = stmt.executeQuery();
             while (rsset.next()) {
-                lst.add(new Game(rsset.getString("name"), rsset.getInt("platform_id"), rsset.getInt("condition"), rsset.getInt("content"), rsset.getInt("id"), rsset.getString("comment")));
+                lst.add(new Game(rsset.getString("name"), rsset.getInt("platform_id"), rsset.getInt("condition"), rsset.getInt("content"), rsset.getInt("id"), rsset.getString("region"), rsset.getString("comment")));
             }
             rsset.close();
             connection.close();
@@ -43,15 +43,18 @@ public class GameDao implements Dao<Game, Game> {
     @Override
     public Game findOne(Game game) throws SQLException {
         try (Connection connection = db.newConnection()) {
-            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Game WHERE user_id = ? AND name = ? AND comment = ?");
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Game WHERE user_id = ? AND name = ? AND comment = ? AND region = ? AND condition = ? AND content = ?");
             stmt.setInt(1, user.getId());
             stmt.setString(2, game.getName());
             stmt.setString(3, game.getComment());
+            stmt.setString(4, game.getRegion());
+            stmt.setInt(5, game.getCondition());
+            stmt.setInt(6, game.getContent());
             ResultSet rsset = stmt.executeQuery();
             if (!rsset.next()) {
                 return null;
             }
-            return new Game(rsset.getString("name"), rsset.getInt("platform_id"), rsset.getInt("condition"), rsset.getInt("content"), rsset.getInt("id"), rsset.getString("comment"));
+            return new Game(rsset.getString("name"), rsset.getInt("platform_id"), rsset.getInt("condition"), rsset.getInt("content"), rsset.getInt("id"), rsset.getString("region"), rsset.getString("comment"));
         }
     }
 
@@ -61,14 +64,14 @@ public class GameDao implements Dao<Game, Game> {
             return false;
         }
         try (Connection connection = db.newConnection()) {
-            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Game(user_id, platform_id, name, condition, content, comment) VALUES (?,?,?,?,?,?)");
-
+            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Game(user_id, platform_id, name, condition, content, region, comment) VALUES (?,?,?,?,?,?,?)");
             stmt.setInt(1, user.getId());
             stmt.setInt(2, game.getPlatform());
             stmt.setString(3, game.getName());
             stmt.setInt(4, game.getCondition());
             stmt.setInt(5, game.getContent());
-            stmt.setString(6, game.getComment());
+            stmt.setString(6, game.getRegion());
+            stmt.setString(7, game.getComment());
             stmt.executeUpdate();
             stmt.close();
             connection.close();

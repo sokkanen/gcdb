@@ -11,8 +11,12 @@ ja näin helpottaa kokoelmansa kirjanpitoa. Sovellus tukee useaa rekisteröityny
 
 [Arkkitehtuuri](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/arkkitehtuuri.md)
 
+[Käyttöohje](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/kayttoohje.md)
+
 ### Releaset
 [Viikko 5](https://github.com/sokkanen/ot-harjoitustyo/releases)
+
+[Viikko 6](https://github.com/sokkanen/ot-harjoitustyo/releases)
 
 ### Komentorivitoiminnot
 #### Testaus

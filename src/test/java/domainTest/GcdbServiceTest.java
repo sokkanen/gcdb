@@ -20,6 +20,7 @@ public class GcdbServiceTest {
     private GcdbService gcdbService;
     private User testUser;
     private Platform testPlatform;
+    private Platform testPlatform2;
     private Game testGame;
     private Game testGame2;
 
@@ -29,8 +30,9 @@ public class GcdbServiceTest {
         this.gcdbService = new GcdbService(database);
         this.testUser = new User("Jamppa", "Tuominen", 1);
         this.testPlatform = new Platform("NES", 1);
-        this.testGame = new Game("The Legend of Zelda", 1, 4, 5, 0, "");
-        this.testGame2 = new Game("Yoshi's Cookie", 1, 4, 5, 0, "");
+        this.testPlatform2 = new Platform("PS1", 2);
+        this.testGame = new Game("The Legend of Zelda", 1, 4, 5, 0, "", "");
+        this.testGame2 = new Game("Yoshi's Cookie", 1, 4, 5, 0, "", "");
         gcdbService.createNewUser(testUser);
         gcdbService.logIn(testUser);
         gcdbService.setCurrentlySelectedPlatform(testPlatform);
@@ -120,9 +122,28 @@ public class GcdbServiceTest {
         gcdbService.saveNewPlatform(testPlatform);
         gcdbService.saveNewGame(testGame);
         gcdbService.saveNewGame(testGame2);
-        gcdbService.saveNewGame(new Game("Mega Man 5", 4, 2, ""));
+        gcdbService.saveNewGame(new Game("Mega Man 5", 4, 2, "", ""));
         Game game = gcdbService.getGameByIndex(0);
         assertEquals("Mega Man 5", game.getName());
+    }
+
+    @Test
+    public void UserIsNotFoundFromDatabase() {
+        assertEquals(false, gcdbService.logIn(new User("FooBar", 123456789, 0)));
+    }
+
+    @Test
+    public void WrongPasswordIsGivenUserNotLoggedIn() {
+        assertEquals(false, gcdbService.logIn(new User("Jamppa", "Juominen", 1)));
+    }
+
+    @Test
+    public void AllGamesByPlatformAreDeleted() {
+        gcdbService.saveNewPlatform(testPlatform);
+        gcdbService.saveNewGame(testGame);
+        gcdbService.saveNewGame(testGame2);
+        gcdbService.deleteGamesByPlatform(testPlatform);        
+        assertEquals(0, gcdbService.getPlatformsGames(testPlatform.getName()).size());
     }
 
     @Test

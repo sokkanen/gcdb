@@ -50,24 +50,6 @@ public class UserTest {
     }
 
     @Test
-    public void addingGameWorks() {
-        testUser.addGame(testGame);
-        Game testGame2 = testUser.getGames().get(0);
-        assertEquals(testGame2, testGame);
-    }
-
-    @Test
-    public void removingGameWorks() {
-        testUser.addGame(testGame);
-        assertEquals(testUser.removeGame(testGame), true);
-    }
-
-    @Test
-    public void removingGameThatDoesNotExistWorks() {
-        assertFalse(testUser.removeGame(testGame));
-    }
-
-    @Test
     public void toStringWorks() {
         assertEquals(testUser.toString(), "Erkki 1164756051 1");
     }

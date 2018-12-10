@@ -13,14 +13,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class PlatformDaoTest {
-    
+
     private Database db;
     private User testUser;
     private PlatformDao testDao;
     private Platform testPlatform;
     private Platform testPlatform2;
     private Connection connection;
-    
+
     @Before
     public void setUp() throws SQLException {
         this.db = new Database("jdbc:sqlite::resource:testdb.db");
@@ -30,7 +30,7 @@ public class PlatformDaoTest {
         this.testPlatform2 = new Platform("WII", 2);
         this.connection = db.newConnection();
     }
-    
+
     @After
     public void tearDown() throws SQLException {
         PreparedStatement stmt = connection.prepareStatement("DELETE FROM UserPlatform");
@@ -39,12 +39,21 @@ public class PlatformDaoTest {
         stmt = connection.prepareStatement("DELETE FROM Platform");
         stmt.executeUpdate();
         stmt.close();
+        stmt = connection.prepareStatement("DELETE FROM User");
+        stmt.executeUpdate();
+        stmt.close();
         connection.close();
     }
-    
+
     @Test
-    public void cannotSavePlatformThatExists() throws SQLException{
+    public void cannotSavePlatformThatExists() throws SQLException {
         testDao.save(testPlatform);
         assertEquals(testDao.save(testPlatform), false);
+    }
+
+    @Test
+    public void twoDifferentPlatformsCanBeSaved() throws SQLException {
+        testDao.save(testPlatform);
+        assertEquals(testDao.save(testPlatform2), true);
     }
 }

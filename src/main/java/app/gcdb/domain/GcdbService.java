@@ -1,21 +1,22 @@
-/**
- * GcdbService vastaa käyttöliittymälogiikasta.
- * Gcdb-luokka tuntee kulloinkin sisäänkirjautuneen käyttäjän ja valitun pelialustan.
- * Gcdb hallinnoi DAO-rajapinnasta johdettujen tietokantaluokkien työtä ja palauttaa
- * sisällön GUI:lle.
- */
 package app.gcdb.domain;
 
 import app.gcdb.dao.GameDao;
 import app.gcdb.dao.PlatformDao;
 import app.gcdb.dao.UserDao;
 import app.gcdb.database.Database;
+import static app.gcdb.domain.GameCondition.values;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.text.Font;
 
+/**
+ * Vastaa käyttöliittymälogiikasta. Luokka tuntee kulloinkin sisäänkirjautuneen
+ * käyttäjän ja valitun pelialustan. Luokka hallinnoi DAO-rajapinnasta
+ * johdettujen tietokantaluokkien työtä. Luokka palauttaa sisällön GUI:lle ja
+ * toteuttaa GUI:n tarvitsemaa käyttöliittymälogiikkaa.
+ */
 public class GcdbService {
 
     private User loggedInUser;
@@ -35,6 +36,18 @@ public class GcdbService {
         this.userDao = new UserDao(database);
     }
 
+    /**
+     * Palauttaa parametrinä annetun alustan pelit tietokannasta. Käytetään
+     * palauttamaan GUI:lle ja kulloinkin sisäänkirjautuneelle käyttäjälle
+     * valittuna olevan pelialustan pelit.
+     *
+     * @param platForm haettava pelialusta
+     *
+     * @return Palauttaa pelilistan GUI:lle.
+     *
+     * @see User#getOneOfUsersPlatforms(java.lang.String)
+     * @see User#setGames(java.util.List)
+     */
     public List<String> getPlatformsGames(String platForm) {
         currentlySelectedPlatform = loggedInUser.getOneOfUsersPlatforms(platForm);
         try {
@@ -44,6 +57,21 @@ public class GcdbService {
         return loggedInUser.getViewableGames(currentlySelectedPlatform);
     }
 
+    /**
+     * Huolehtii käyttäjän sisäänkirjauksesta. Sisäänkirjauksen yhteydessä
+     * luodaan sisäänkirjautuneelle käyttäjälle gameDao- ja platformDao-oliot
+     * huolehtimaan alustojen ja pelien hallinnasta tietokantaan ja
+     * tietokannasta.
+     *
+     * @param user sisäänkirjautumisen yhteydessä annetusta käyttäjätunnuksesta
+     * ja salasanasta luotu käyttäjä.
+     *
+     * @return palauttaa false, jos käyttäjänimeä ei ole tietokannassa tai
+     * salasana ei täsmää. Muutoin hakee kirjautuneelle käyttäjälle pelialustat
+     * ja palauttaa true.
+     *
+     * @see User#setPlatforms(java.util.List)
+     */
     public boolean logIn(User user) {
         try {
             User userFromDb = userDao.findOne(user.getUsername());
@@ -62,10 +90,19 @@ public class GcdbService {
         }
     }
 
+    /**
+     * Luo uuden käyttäjän ja tallentaa sen tietokantaan.
+     *
+     * @param user sisäänkirjautumisen yhteydessä annetusta käyttäjätunnuksesta
+     * ja salasanasta luotu käyttäjä.
+     *
+     * @return palauttaa 1 jos käyttäjänimi tai salasana on tyhjä tai jos
+     * käyttäjätunnuksen tai salasanan pituus on alle 5 merkkiä. Palauttaa 2 jos
+     * käyttäjätunnus on varattuna ja 3 jos uuden käyttäjän tallentaminen
+     * tietokantaan onnistui.
+     */
     public int createNewUser(User user) {
-        if (user.getUsername().equals("") || user.getPassHash() == 0) {
-            return 1;
-        } else if (user.getUsername().length() < 5 || user.getPassHash() == 0) {
+        if (user.getUsername().length() < 5 || user.getPassHash() == 0) {
             return 1;
         }
         boolean checkIfInDb = false;
@@ -88,6 +125,12 @@ public class GcdbService {
         return currentlySelectedPlatform;
     }
 
+    /**
+     * Palauttaa kirjautuneen käyttäjän pelien määrän valitulta alustalta.
+     *
+     * @return palauttaa GUI:lle sisäänkirjautuneen käyttäjän valittuna olevan
+     * alustan pelit String-listana.
+     */
     public int loggedInUsersGameCountForPlatform() {
         return loggedInUser.getViewableGames(currentlySelectedPlatform).size();
     }
@@ -100,6 +143,14 @@ public class GcdbService {
         this.currentlySelectedPlatform = platform;
     }
 
+    /**
+     * Poistaa parametrina annetun alustan käyttäjältä.
+     *
+     * @param platform poistettava alusta.
+     *
+     * @return palauttaa GUI:lle käyttäjän uuden alustalistan tai poiston
+     * epäonnistuttua null.
+     */
     public List<String> deletePlatform(Platform platform) {
         try {
             platformDao.delete(platform);
@@ -110,6 +161,14 @@ public class GcdbService {
         return null;
     }
 
+    /**
+     * Tallentaa parametrina annetun alustan käyttäjälle.
+     *
+     * @param platform lisättävä alusta.
+     *
+     * @return palauttaa GUI:lle käyttäjän uuden alustalistan tai poiston
+     * epäonnistuttua null.
+     */
     public List<String> saveNewPlatform(Platform platform) {
         if (!platform.getName().isEmpty()) {
             try {
@@ -122,6 +181,14 @@ public class GcdbService {
         return null;
     }
 
+    /**
+     * Tallentaa parametrina annetun pelin käyttäjälle.
+     *
+     * @param game lisättävä peli.
+     *
+     * @return palauttaa GUI:lle käyttäjän uuden pelilistan.
+     *
+     */
     public List<String> saveNewGame(Game game) {
         game.setPlatform(currentlySelectedPlatform.getId());
         if (!game.getName().isEmpty()) {
@@ -135,6 +202,15 @@ public class GcdbService {
         return gameList;
     }
 
+    /**
+     * Poistaa parametrina annetun pelin käyttäjältä.
+     *
+     * @param game poistettava peli.
+     *
+     * @return palauttaa GUI:lle käyttäjän uuden pelilistan tai poiston
+     * epäonnistuessa null.
+     *
+     */
     public List<String> deleteGame(Game game) {
         try {
             Game toBeDeleted = loggedInUser.getGamesByPlatform(currentlySelectedPlatform).get(game.getId());
@@ -146,10 +222,36 @@ public class GcdbService {
         return null;
     }
 
+    /**
+     * Poistaa parametrina annetun alustan kaikki pelit käyttäjältä. Metodia
+     * käytetään poistettaessa alusta, jolle on lisätty pelejä.
+     *
+     * @param platform alusta, jolta kaikki pelit poistetaan.
+     *
+     */
+    public void deleteGamesByPlatform(Platform platform) {
+        List<Game> gamesToBeDeleted = this.loggedInUser.getGamesByPlatform(platform);
+        for (int i = 0; i < gamesToBeDeleted.size(); i++) {
+            try {
+                gameDao.delete(gamesToBeDeleted.get(i));
+            } catch (SQLException ex) {
+            }
+        }
+    }
+
     public boolean platformIsSelected() {
         return this.currentlySelectedPlatform != null;
     }
 
+    /**
+     * Palauttaa käyttäjältä parametrin mukaisen pelin.
+     *
+     * @param index haettavan pelin indeksi.
+     *
+     * @return Palauttaa indeksin mukaisen pelin tai indeksin ollessa pienempi
+     * kuin 0 (tyhjä ListView GUI:lla), palauttaa null.
+     *
+     */
     public Game getGameByIndex(int index) {
         if (index < 0) {
             return null;
@@ -158,101 +260,115 @@ public class GcdbService {
         return byPlatform.get(index);
     }
 
+    /**
+     * Palauttaa kaikki kuntoluokitusta kuvaavan GameCondition-luokan
+     * merkkijonoarvot listana
+     *
+     * @return Palauttaa merkkijonolistan.
+     */
+    public List<String> getConditions() {
+        List<String> conditions = new ArrayList<>();
+        for (GameCondition cnd : values()) {
+            conditions.add(cnd.getCndStr());
+        }
+        return conditions;
+    }
+
+    /**
+     * Palauttaa pelin kuntoa kuvaavan luvun parametrina annetun merkkijonon
+     * perusteella.
+     *
+     * @param condition kuntoluokkaa vastaava merkkijono
+     *
+     * @return Palauttaa kuntoluokkaa vastaavan luvun
+     */
+    public int conditionToInt(String condition) {
+        for (GameCondition cnd : values()) {
+            if (cnd.getCndStr().equals(condition)) {
+                return cnd.getCndNr();
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * Palauttaa pelin kuntoa kuvaavan merkkijonon parametrina annetun numeron
+     * perusteella.
+     *
+     * @param paramInt kuntoluokkaa vastaava luku
+     *
+     * @return Palauttaa kuntoluokkaa vastaavan merkkijonon
+     */
+    public String intToCondition(int paramInt) {
+        for (GameCondition cnd : values()) {
+            if (cnd.getCndNr() == paramInt) {
+                return cnd.getCndStr();
+            }
+        }
+        return "Not Defined";
+    }
+
+    /**
+     * Palauttaa kaikki sisältöä kuvaavan GameContent-luokan merkkijonoarvot
+     * listana
+     *
+     * @return Palauttaa merkkijonolistan.
+     */
+    public List<String> getContents() {
+        List<String> contents = new ArrayList<>();
+        for (GameContent cnt : GameContent.values()) {
+            contents.add(cnt.getCntStr());
+        }
+        return contents;
+    }
+
+    /**
+     * Palauttaa pelin sisältöä kuvaavan luvun parametrina annetun merkkijonon
+     * perusteella.
+     *
+     * @param content sisältöä vastaava merkkijono
+     *
+     * @return Palauttaa sisältöä vastaavan luvun
+     */
+    public int contentToInt(String content) {
+        for (GameContent cnt : GameContent.values()) {
+            if (cnt.getCntStr().equals(content)) {
+                return cnt.getCntNr();
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * Palauttaa pelin sisältöä kuvaavan merkkijonon parametrina annetun numeron
+     * perusteella.
+     *
+     * @param paramInt sisältöä vastaava luku
+     *
+     * @return Palauttaa sisältöä vastaavan merkkijonon
+     */
+    public String intToContent(int paramInt) {
+        for (GameContent cnt : GameContent.values()) {
+            if (cnt.getCntNr() == paramInt) {
+                return cnt.getCntStr();
+            }
+        }
+        return "Not Defined";
+    }
+
+    /**
+     * Katkaisee tietokantayhteyden.
+     *
+     * @return Palauttaa true, kun yhteys on katkaistu. Muussa tapauksessa
+     * palauttaa false.
+     *
+     */
     public boolean stop() {
         try {
             database.closeConnection();
             return true;
         } catch (SQLException e) {
-            System.out.println("error closing database");
         }
         return false;
-    }
-
-    public int conditionToInt(String condition) {
-        switch (condition) {
-            case "Not defined":
-                return 1;
-            case "Very Poor":
-                return 2;
-            case "Poor":
-                return 3;
-            case "Fair":
-                return 4;
-            case "Good":
-                return 5;
-            case "Very good":
-                return 6;
-            case "Excellent":
-                return 7;
-            case "Near mint":
-                return 8;
-            case "Mint":
-                return 9;
-            case "Gem mint":
-                return 10;
-        }
-        return 1;
-    }
-
-    public String intToCondition(int cnd) {
-        switch (cnd) {
-            case 1:
-                return "Not defined";
-            case 2:
-                return "Very Poor";
-            case 3:
-                return "Poor";
-            case 4:
-                return "Fair";
-            case 5:
-                return "Good";
-            case 6:
-                return "Very good";
-            case 7:
-                return "Excellent";
-            case 8:
-                return "Near mint";
-            case 9:
-                return "Mint";
-            case 10:
-                return "Gem mint";
-        }
-        return "Not defined";
-    }
-
-    public int contentToInt(String condition) {
-        switch (condition) {
-            case "Not defined":
-                return 1;
-            case "C":
-                return 2;
-            case "CI":
-                return 3;
-            case "CB":
-                return 4;
-            case "CIB":
-                return 5;
-            case "NIB":
-                return 6;
-        }
-        return 1;
-    }
-
-    public String intToContent(int cnt) {
-        switch (cnt) {
-            case 1:
-                return "Not defined";
-            case 2:
-                return "C";
-            case 3:
-                return "CI";
-            case 4:
-                return "CB";
-            case 5:
-                return "CIB";
-            case 6:
-                return "NIB";
-        }
-        return "Not defined";
     }
 }

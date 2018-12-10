@@ -1,9 +1,13 @@
 package app.gcdb.domain;
 
+import app.gcdb.dao.GameDao;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * User-luokalla kuvataan ohjelman käyttäjiä.
+ */
 public class User {
 
     private String username;
@@ -35,6 +39,14 @@ public class User {
         this.platforms = new ArrayList<>();
     }
 
+    /**
+     * Metodi luo annetusta salasanasta hajautusarvon. Käyttäjien salasanat
+     * tallennetaan tietokantaan hajautusarvoina.
+     *
+     * @param passWord käyttäjän antama salasana.
+     *
+     * @return hajautusarvo(int)
+     */
     public int generatePassHash(String passWord) {
         if (passWord.length() > 4) {
             return passWord.hashCode();
@@ -50,19 +62,13 @@ public class User {
         return passHash;
     }
 
-    public void addGame(Game game) {
-        this.games.add(game);
-    }
-
-    public boolean removeGame(Game game) {
-        if (this.games.contains(game)) {
-            this.games.remove(game);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    /**
+     * Metodi palauttaa käyttäjän pelialustan.
+     *
+     * @param searchstring haetun pelialustan nimi.
+     *
+     * @return pyydetty pelialusta, jos ei löydy, niin null
+     */
     public Platform getOneOfUsersPlatforms(String searchstring) {
         for (int i = 0; i < this.platforms.size(); i++) {
             if (this.platforms.get(i).getName().equals(searchstring)) {
@@ -72,6 +78,13 @@ public class User {
         return null;
     }
 
+    /**
+     * Metodi palauttaa yhden pelin.
+     *
+     * @param index haetun pelin indeksi.
+     *
+     * @return pyydetty peli.
+     */
     public Game getOneOfUsersGames(int index) {
         return this.games.get(index);
     }
@@ -80,6 +93,14 @@ public class User {
         this.platforms = lst;
     }
 
+    /**
+     * Metodi järjestää käyttäjän pelit aakkosjärjestykseen ja asettaa pelit
+     * käyttäjän pelilistaksi.
+     *
+     * @param lst tietokannasta haettu käyttäjän pelilista.
+     *
+     * @see Game#compareTo(app.gcdb.domain.Game)
+     */
     public void setGames(List<Game> lst) {
         Collections.sort(lst);
         this.games = lst;
@@ -89,6 +110,13 @@ public class User {
         return this.games;
     }
 
+    /**
+     * Metodi palauttaa käyttäjän pelit pyydetyltä pelialustalta.
+     *
+     * @param platform Pelialusta, jolta pelit halutaan.
+     *
+     * @return Palauttaa pelilistan kyseiseltä käyttäjältä ja pelialustalta.
+     */
     public List<Game> getGamesByPlatform(Platform platform) {
         List<Game> plGames = new ArrayList<>();
         for (int i = 0; i < games.size(); i++) {
@@ -103,6 +131,12 @@ public class User {
         return this.platforms;
     }
 
+    /**
+     * Metodi palauttaa käyttäjän pelialustojen nimet. Metodia käytetään
+     * GUI-luokan ListView-olioiden parametrina.
+     *
+     * @return Käyttäjän pelialustat String-listana.
+     */
     public List<String> getViewablePlatforms() {
         List<String> platformStrings = new ArrayList<>();
         for (int i = 0; i < this.platforms.size(); i++) {
@@ -111,6 +145,12 @@ public class User {
         return platformStrings;
     }
 
+    /**
+     * Metodi palauttaa käyttäjän pelien nimet pyydetyltä alustalta. Metodia
+     * käytetään GUI-luokan ListView-olioiden parametrina.
+     *
+     * @return Käyttäjän pelit String-listana.
+     */
     public List<String> getViewableGames(Platform platform) {
         List<String> gameStrings = new ArrayList<>();
         for (int i = 0; i < this.games.size(); i++) {

@@ -53,7 +53,6 @@ public class UserPlatformDao implements Dao<Platform, Platform> {
             conn.close();
             return true;
         } catch (SQLException error) {
-            System.out.println(error.getMessage());
             return false;
         }
     }

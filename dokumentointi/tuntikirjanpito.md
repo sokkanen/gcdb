@@ -16,4 +16,8 @@ päivä | aika | mitä tein
 30.11 | 4    | Pelit listalle näkyviin. GcdbService-luokka. Vastuut GUI->GcdbService.
 01.12 | 2    | Dokumentoinnin päivitys. Pelinäkymän hahmotelma.
 02.12 | 4    | Pelin poistamismahdollisuus. GcdbServicen testit. JAR:n luominen. Dokumentaation päivitys
-YHT   | 37
+07.12 | 2    | Alustan poisto poistaa myös pelit. "Oletko varma"-ikkuna poistoihin.
+08.12 | 2    | Pelien aluekoodien lisäysmahdollisuus. Lisää testikattavuutta. Ulkoasun hiontaa.
+09.12 | 3    | JavaDoc. Koodin siivoamisen aloittaminen.
+10.12 | 4    | Koodin siivoaminen. GameContent ja GameCondition-Enumluokat. Dokumentaatio.
+YHT   | 48
