@@ -24,4 +24,5 @@ päivä | aika | mitä tein
 16.12 | 3    | Muokkausmetodin bugikorjaukset. Testikattavuus uusille luokille. Koodin siivoaminen.
 18.12 | 3    | JavaDoc, Dokumentointi. Vapaasti valittava tietokannan nimi erillisessä tiedostossa.
 19.12 | 2    | JavaDoc, Dokumentointi.
-YHT   | 58
+20.12 | 1    | Dokumentoinnin hiominen. Työn palautus
+YHT   | 59
