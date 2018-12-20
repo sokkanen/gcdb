@@ -14,10 +14,10 @@ Käyttöliittymä sisältää neljä näkymää:
 * Ohjelman sammutusnäkymä
 
 Kirjautuminen, Uuden käyttäjän luominen ja Päänäkymä on toteutettu erillisinä ![Scene](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/Scene.html)-olioina, joista yksi
-kerrallaan on sijoitettuna ![Stage](https://docs.oracle.com/javase/8/javafx/api/javafx/stage/Stage.html)-olioon. Sammutusnäkymä on toteutettu Kirjautumisnäkymän pohjalla.
+kerrallaan on sijoitettuna ![Stage](http://docs.oracle.com/javase/8/javafx/api/javafx/stage/Stage.html)-olioon. Sammutusnäkymä on toteutettu Kirjautumisnäkymän pohjalla.
 
 Käyttöliittymä on pyritty eristämään sovelluslogiikasta. Käyttöliittymäluokka ![GUI](https://github.com/sokkanen/ot-harjoitustyo/blob/master/src/main/java/app/gcdb/ui/GUI.java) käyttää sovelluslogiikan
-suorittamiseen ![GcdbService](https://github.com/sokkanen/ot-harjoitustyo/blob/master/src/main/java/app/gcdb/domain/GcdbService.java)-luokan metodeja.
+suorittamiseen ![GcdbService](http://github.com/sokkanen/ot-harjoitustyo/blob/master/src/main/java/app/gcdb/domain/GcdbService.java)-luokan metodeja.
 
 ## Sovelluslogiikka
 
