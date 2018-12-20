@@ -24,7 +24,7 @@ Käyttöliittymää lukuunottamatta testien rivikattavuus on 85% ja haaraumakatt
 yksinkertaisia get- ja set-metodeita. Haaraumakattavuuden prosentuaalista arvoa laskee useiden luokkien poikkeusten (Pääsääntöisesti
 SQLException) testaamattomuus.
 
-![jacocoreport](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/kuvat/jacocoreport.jpg)
+![jacocoreport](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/kuvat/jacocoresult.jpg)
 
 ### Järjestelmätestaus ###
 
