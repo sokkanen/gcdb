@@ -26,10 +26,10 @@ taas on pelejä (![Game](https://github.com/sokkanen/ot-harjoitustyo/blob/master
 
 ![keskeinenlogiikka](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/kuvat/fundamentallogic.jpg)
 
-Sovelluslogiikan suorittamisesta vastaa GcdbService-olio. GcdbService-oliolla on pääsy kaikkiin tietokannan
-sisältämiin tietoihin Dao-pakkauksen luokkien kautta. GcdbService tuntee kulloinkin sisäänkirjautuneen käyttäjän
+Sovelluslogiikan suorittamisesta vastaa [GcdbService](https://github.com/sokkanen/ot-harjoitustyo/blob/master/src/main/java/app/gcdb/domain/GcdbService.java)-olio. GcdbService-oliolla on pääsy kaikkiin tietokannan
+sisältämiin tietoihin [Dao-pakkauksen](https://github.com/sokkanen/ot-harjoitustyo/tree/master/src/main/java/app/gcdb/dao) luokkien kautta. GcdbService tuntee kulloinkin sisäänkirjautuneen käyttäjän
 ja kulloinkin GUI:lla valittuna olevan pelialustan (Platform). GcdbService luo kunkin sisäänkirjautumisen yhteydessä
-sisäänkirjautuneelle käyttäjälle (User) omat PlatformDao ja GameDao -oliot. PlatformDao käyttää UserPlatform-oliota
+sisäänkirjautuneelle käyttäjälle (User) omat [PlatformDao](https://github.com/sokkanen/ot-harjoitustyo/blob/master/src/main/java/app/gcdb/dao/PlatformDao.java) ja [GameDao](https://github.com/sokkanen/ot-harjoitustyo/blob/master/src/main/java/app/gcdb/dao/GameDao.java) -oliot. PlatformDao käyttää [UserPlatform](https://github.com/sokkanen/ot-harjoitustyo/blob/master/src/main/java/app/gcdb/dao/UserPlatformDao.java)-oliota
 käyttäjään liittyvän alustojen tietokantahallinnan toteuttamiseen.
 
 Ohjelma jakautuu neljään pakkaukseen:
@@ -52,14 +52,14 @@ Sovellus ottaa tietokantayhteyden jokaisen tehdyn muutoksen päivittämiseksi. O
 ovat näin ollen jatkuvasti ajan tasalla. Tämän vuoksi esimerkiksi ohjelman sammuttaminen ei kumoa
 viimeisiä muutoksia.
 
-Ohjelma käyttää tietokannanhallintaan SQLITE:a Javan JDBC:n kautta. Ohjelma käyttää oletustietokantanaan 
+Ohjelma käyttää tietokannanhallintaan SQLITE:a Javan [JDBC:n](https://www.oracle.com/technetwork/java/javase/jdbc/index.html) kautta. Ohjelma käyttää oletustietokantanaan 
 gcdb.db -tiedostoa. Ohjelman testeihin käytetään testdb.db -tiedostoa, jonka taulut ovat kopio ohjelman
 varsinaisesta tietokannasta.
 
-Käyttäjä voi määrittää haluamansa tietokantaosoitteen ohjelmahakemiston juuresta löytyvää gcdb.conf -tiedostoa
+Käyttäjä voi määrittää haluamansa tietokantaosoitteen ohjelmahakemiston juuresta löytyvää [gcdb.conf](https://github.com/sokkanen/ot-harjoitustyo/blob/master/gcdb.conf) -tiedostoa
 muokkaamalla.
 
-Ohjelma ei tallenna salasanoja selväkielisenä, vaan Javan String-luokan metodin hashcode tuottamina numerosarjoina.
+Ohjelma ei tallenna salasanoja selväkielisenä, vaan Javan [String](https://docs.oracle.com/javase/7/docs/api/java/lang/String.html)-luokan metodin [hashcode](https://www.tutorialspoint.com/java/java_string_hashcode.htm) tuottamina numerosarjoina.
 
 Gcdb.db (tai käyttäjän määrittämä tietokanta) sisältää seuraavat tietokantataulut: 
 * User(id, username, passhash)
@@ -105,7 +105,7 @@ nyt lisättävää pelialustaa. Tämän jälkeen ohjelman kontrolli etenee seura
 ![newpltfrmsequence](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/kuvat/newpltfrmsequence.jpg)
 
 Pelialusta lisätään tietokantaan Platform-tauluun. UserPlatform-tauluun luodaan viite käyttäjän ja alustan
-id-numeroiden perusteella. Päivitetty pelialustalista lisätään User-oliolle, jolta haetaan GUI:n ListView-oliolle
+id-numeroiden perusteella. Päivitetty pelialustalista lisätään User-oliolle, jolta haetaan GUI:n [ListView](https://docs.oracle.com/javafx/2/ui_controls/list-view.htm)-oliolle
 platformList näytettäväksi lista käyttäjän pelialustoista.
 
 ### Pelin lisääminen
