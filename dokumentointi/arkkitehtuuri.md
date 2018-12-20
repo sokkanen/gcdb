@@ -2,8 +2,8 @@
 
 ## Rakenne
 
-Pakkaus app.gcdb.ui sisältää JavaFX:llä toteutetun käyttöliittymän, app.gcdb.domain ohjelman sovelluslogiikan,
-app.gcdb.database tietokantayhteyden hallinnan ja app.gcdb.dao tietokannanhallinnasta vastaavan koodin.
+Pakkaus ![app.gcdb.ui](https://github.com/sokkanen/ot-harjoitustyo/tree/master/src/main/java/app/gcdb/ui) sisältää JavaFX:llä toteutetun käyttöliittymän, ![app.gcdb.domain](https://github.com/sokkanen/ot-harjoitustyo/tree/master/src/main/java/app/gcdb/domain) ohjelman sovelluslogiikan,
+![app.gcdb.database](https://github.com/sokkanen/ot-harjoitustyo/tree/master/src/main/java/app/gcdb/database) tietokantayhteyden hallinnan ja app.gcdb.dao tietokannanhallinnasta vastaavan koodin.
 
 ## Käyttöliittymä
 
@@ -13,16 +13,16 @@ Käyttöliittymä sisältää neljä näkymää:
 * Päänäkymä (Pelien ja Alustojen hallinnointi)
 * Ohjelman sammutusnäkymä
 
-Kirjautuminen, Uuden käyttäjän luominen ja Päänäkymä on toteutettu erillisinä Scene-olioina, joista yksi
-kerrallaan on sijoitettuna Stage-olioon. Sammutusnäkymä on toteutettu Kirjautumisnäkymän pohjalla.
+Kirjautuminen, Uuden käyttäjän luominen ja Päänäkymä on toteutettu erillisinä ![Scene](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/Scene.html)-olioina, joista yksi
+kerrallaan on sijoitettuna ![Stage](https://docs.oracle.com/javase/8/javafx/api/javafx/stage/Stage.html)-olioon. Sammutusnäkymä on toteutettu Kirjautumisnäkymän pohjalla.
 
-Käyttöliittymä on pyritty eristämään sovelluslogiikasta. Käyttöliittymäluokka GUI käyttää sovelluslogiikan
-suorittamiseen GcdbService-luokan metodeja.
+Käyttöliittymä on pyritty eristämään sovelluslogiikasta. Käyttöliittymäluokka ![GUI](https://github.com/sokkanen/ot-harjoitustyo/blob/master/src/main/java/app/gcdb/ui/GUI.java) käyttää sovelluslogiikan
+suorittamiseen ![GcdbService](https://github.com/sokkanen/ot-harjoitustyo/blob/master/src/main/java/app/gcdb/domain/GcdbService.java)-luokan metodeja.
 
 ## Sovelluslogiikka
 
-Sovelluksen loogisen datamallin muodostavat käyttäjä (User), jolla on pelialustoja (Platform), joilla 
-taas on pelejä (Game).
+Sovelluksen loogisen datamallin muodostavat käyttäjä (![User](https://github.com/sokkanen/ot-harjoitustyo/blob/master/src/main/java/app/gcdb/domain/User.java)), jolla on pelialustoja (![Platform](https://github.com/sokkanen/ot-harjoitustyo/blob/master/src/main/java/app/gcdb/domain/Platform.java)), joilla 
+taas on pelejä (![Game](https://github.com/sokkanen/ot-harjoitustyo/blob/master/src/main/java/app/gcdb/domain/Game.java)).
 
 ![keskeinenlogiikka](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/kuvat/fundamentallogic.jpg)
 
