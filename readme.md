@@ -13,10 +13,14 @@ ja näin helpottaa kokoelmansa kirjanpitoa. Sovellus tukee useaa rekisteröityny
 
 [Käyttöohje](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/kayttoohje.md)
 
+[Testausdokumentti](https://github.com/sokkanen/ot-harjoitustyo/blob/master/dokumentointi/testausdokumentti.md)
+
 ### Releaset
 [Viikko 5](https://github.com/sokkanen/ot-harjoitustyo/releases)
 
 [Viikko 6](https://github.com/sokkanen/ot-harjoitustyo/releases)
+
+[Loppupalautus](https://github.com/sokkanen/ot-harjoitustyo/releases)
 
 ### Komentorivitoiminnot
 #### Testaus

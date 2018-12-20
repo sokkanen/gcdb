@@ -5,9 +5,13 @@ import app.gcdb.dao.PlatformDao;
 import app.gcdb.dao.UserDao;
 import app.gcdb.database.Database;
 import static app.gcdb.domain.GameCondition.values;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,15 +29,46 @@ public class GcdbService {
     private PlatformDao platformDao;
     private UserDao userDao;
     private Database database;
+    private String dbAddress;
 
     public GcdbService() {
-        this.database = new Database("jdbc:sqlite::resource:gcdb.db");
+        try {
+            getDatabaseAddress();
+        } catch (IOException ex) {
+        }
+        this.database = new Database("jdbc:sqlite:" + dbAddress);
         this.userDao = new UserDao(database);
     }
 
+    /**
+     * Konstruktori testien käyttöön.
+     * 
+     * @param database Testeissä käytettävä tietokanta
+     */
     public GcdbService(Database database) {
         this.database = database;
         this.userDao = new UserDao(database);
+    }
+
+    /**
+     * Lukee gcdb.conf -tiedostosta tietokannan osoitteen. Mikäli tiedostoa ei
+     * löydy tai osoitetta ei ole, asettaa ohjelma tietokannaksi
+     * /resources-kansiosta löytyvän oletustietokannan.
+     * 
+     * @throws IOException Virhe luettaessa asetustiedostoa
+     *
+     */
+    public void getDatabaseAddress() throws IOException {
+        Properties props = new Properties();
+        try {
+            props.load(new FileInputStream("gcdb.conf"));
+        } catch (FileNotFoundException ex) {
+            dbAddress = ":resource:gcdb.db";
+        }
+        dbAddress = props.getProperty("database");
+        if (dbAddress.equals("")) {
+            dbAddress = ":resource:gcdb.db";
+        }
     }
 
     /**
@@ -51,7 +86,7 @@ public class GcdbService {
     public List<String> getPlatformsGames(String platForm) {
         currentlySelectedPlatform = loggedInUser.getOneOfUsersPlatforms(platForm);
         try {
-            loggedInUser.setGames(gameDao.findAll(null));
+            loggedInUser.setGames(gameDao.findAll());
         } catch (SQLException error) {
         }
         return loggedInUser.getViewableGames(currentlySelectedPlatform);
@@ -83,7 +118,7 @@ public class GcdbService {
             this.loggedInUser = userFromDb;
             this.platformDao = new PlatformDao(database, loggedInUser);
             this.gameDao = new GameDao(database, loggedInUser);
-            loggedInUser.setPlatforms(platformDao.findAll(null));
+            loggedInUser.setPlatforms(platformDao.findAll());
             return true;
         } catch (SQLException error) {
             return false;
@@ -110,7 +145,7 @@ public class GcdbService {
             checkIfInDb = userDao.save(user);
         } catch (SQLException error) {
         }
-        if (!checkIfInDb) {
+        if (!checkIfInDb || user.getUsername().length() > 20) {
             return 2;
         } else {
             return 3;
@@ -154,7 +189,7 @@ public class GcdbService {
     public List<String> deletePlatform(Platform platform) {
         try {
             platformDao.delete(platform);
-            loggedInUser.setPlatforms(platformDao.findAll(null));
+            loggedInUser.setPlatforms(platformDao.findAll());
             return loggedInUser.getViewablePlatforms();
         } catch (SQLException error) {
         }
@@ -173,7 +208,7 @@ public class GcdbService {
         if (!platform.getName().isEmpty()) {
             try {
                 platformDao.save(platform);
-                loggedInUser.setPlatforms(platformDao.findAll(null));
+                loggedInUser.setPlatforms(platformDao.findAll());
             } catch (SQLException error) {
             }
             return loggedInUser.getViewablePlatforms();
@@ -194,7 +229,7 @@ public class GcdbService {
         if (!game.getName().isEmpty()) {
             try {
                 gameDao.save(game);
-                loggedInUser.setGames(gameDao.findAll(null));
+                loggedInUser.setGames(gameDao.findAll());
             } catch (SQLException error) {
             }
         }
@@ -203,7 +238,26 @@ public class GcdbService {
     }
 
     /**
-     * Poistaa parametrina annetun pelin käyttäjältä.
+     * Päivittää parametrina annetun pelin käyttäjälle. Käyttää deleteGame ja
+     * saveNewGame -metodeja.
+     *
+     * @param game Päivitettävä peli.
+     *
+     * @see GcdbService#deleteGame(app.gcdb.domain.Game)
+     * @see GcdbService#saveNewGame(app.gcdb.domain.Game)
+     *
+     * @return palauttaa GUI:lle käyttäjän uuden pelilistan.
+     *
+     */
+    public List<String> updateGame(Game game) {
+        deleteGame(game);
+        return saveNewGame(game);
+    }
+
+    /**
+     * Poistaa parametrina annetun pelin käyttäjältä. Jos peli poistetaan
+     * listaindeksin perusteella, on pelin nimi tyhjä. Mikäli poisto tapahtuu
+     * muokkaukseen liittyen, on parametrina annettavalla pelillä nimi.
      *
      * @param game poistettava peli.
      *
@@ -213,9 +267,13 @@ public class GcdbService {
      */
     public List<String> deleteGame(Game game) {
         try {
-            Game toBeDeleted = loggedInUser.getGamesByPlatform(currentlySelectedPlatform).get(game.getId());
-            gameDao.delete(toBeDeleted);
-            loggedInUser.setGames(gameDao.findAll(null));
+            if (game.getName().isEmpty()) {
+                Game toBeDeleted = loggedInUser.getGamesByPlatform(currentlySelectedPlatform).get(game.getId());
+                gameDao.delete(toBeDeleted);
+            } else {
+                gameDao.delete(game);
+            }
+            loggedInUser.setGames(gameDao.findAll());
             return loggedInUser.getViewableGames(currentlySelectedPlatform);
         } catch (SQLException error) {
         }
@@ -258,6 +316,22 @@ public class GcdbService {
         }
         List<Game> byPlatform = loggedInUser.getGamesByPlatform(currentlySelectedPlatform);
         return byPlatform.get(index);
+    }
+
+    /**
+     * Palauttaa pelin aluekoodin / alueen.
+     *
+     * @param game Haettava peli.
+     *
+     * @return Palauttaa pelin aluekoodin tai U/K, kun aluekoodia ei ole
+     * määritelty.
+     *
+     */
+    public String getGameRegion(Game game) {
+        if (game.getRegion().equals("")) {
+            return "U/K";
+        }
+        return game.getRegion();
     }
 
     /**

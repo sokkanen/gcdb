@@ -1,7 +1,7 @@
 package app.gcdb.domain;
 
 /**
- * Platform-luokalla kuvataan pelialustoja. Muuttujina id ja nimi.
+ * Platform-luokalla kuvataan pelialustoja. Alustan muuttujia ovat id ja nimi.
  */
 public class Platform {
 

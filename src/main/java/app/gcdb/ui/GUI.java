@@ -1,13 +1,10 @@
 package app.gcdb.ui;
 
 import app.gcdb.domain.Game;
-import app.gcdb.domain.GameCondition;
 import app.gcdb.domain.GcdbService;
 import app.gcdb.domain.Platform;
 import app.gcdb.domain.User;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.collections.FXCollections;
@@ -47,6 +44,8 @@ import javafx.stage.Stage;
  */
 public class GUI extends Application {
 
+    private int height;
+    private int width;
     private Button toNewUserWindow;
     private Button backToLoginView;
     private Button logOut;
@@ -59,6 +58,7 @@ public class GUI extends Application {
     private Image loginBackGround;
     private Image gameOver;
     private Stage areYouSure;
+    private ListView gameList;
 
     /**
      * Valmistelee luokkamuuttujat GUI:n käytettäväksi.
@@ -68,7 +68,7 @@ public class GUI extends Application {
         this.toNewUserWindow = new Button();
         this.backToLoginView = new Button();
         this.logOut = new Button();
-        this.logOut.setText("LOGOUT");
+        this.logOut.setText("LogOut");
         this.logOut.setStyle("-fx-background-color: #DE5865;");
         this.login = new Button();
         this.gcdbService = new GcdbService();
@@ -80,17 +80,23 @@ public class GUI extends Application {
         this.yesButton.setStyle("-fx-background-color: #42f44b;");
         this.noButton = new Button("NO");
         this.noButton.setStyle("-fx-background-color: #DE5865;");
+        this.height = 820;
+        this.width = 1000;
     }
 
     /**
      * Ohjelman käynnistysmetodi. Hallinnoi ikkunoiden vaihtamista.
+     *
+     * @param stage Ohjelman pääikkuna
+     *
+     * @throws SQLException virhe tietokannanhallinnassa
      */
     @Override
     public void start(Stage stage) throws SQLException {
         this.areYouSure = areYouSureWindow();
         stage.setTitle("Game Collector's Database");
-        stage.setWidth(1000);
-        stage.setHeight(820);
+        stage.setWidth(width);
+        stage.setHeight(height);
         stage.setScene(loadLoginWindow());
         stage.show();
         toNewUserWindow.setOnAction((event) -> {
@@ -123,6 +129,7 @@ public class GUI extends Application {
      */
     public Scene loadLoginWindow() {
         BorderPane signInWindow = new BorderPane();
+        signInWindow.setPrefSize(width, height);
         signInWindow.setBackground(new Background(new BackgroundImage(loginBackGround, BackgroundRepeat.REPEAT,
                 BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         HBox signInElements = new HBox();
@@ -131,7 +138,7 @@ public class GUI extends Application {
         VBox usernameAndPassword = new VBox();
         Label label = new Label();
         closeProgram.setStyle("-fx-background-color: #DE5865;");
-        closeProgram.setText("CLOSE PROGRAM");
+        closeProgram.setText("Exit program");
         closeProgram.setOnAction((event) -> {
             stop();
             signInWindow.setBackground(new Background(new BackgroundImage(gameOver, BackgroundRepeat.REPEAT,
@@ -141,8 +148,9 @@ public class GUI extends Application {
             label.setTextFill(Color.rgb(0, 0, 0));
             signInWindow.getChildren().removeAll(signInElements, usernameAndPassword);
             signInWindow.setCenter(label);
+
         });
-        this.toNewUserWindow.setText("Create new user");
+        this.toNewUserWindow.setText("Create a new user");
         this.toNewUserWindow.setStyle("-fx-background-color: #70A4DF;");
         this.login.setText("LOGIN");
         this.login.setStyle("-fx-background-color: #42E621;");
@@ -152,13 +160,13 @@ public class GUI extends Application {
         enterusername.setFont(Font.font("Calibri", 20));
         TextField username = new TextField();
         username.setPromptText("username");
+        username.setMaxSize(250, 100);
         label.setText("Press <ENTER> to enter credentials");
         label.setFont(Font.font("Calibri", 20));
         label.setTextFill(Color.rgb(6, 46, 206));
         PasswordField password = new PasswordField();
         password.setPromptText("password");
         password.setMaxSize(250, 100);
-        username.setMaxSize(250, 100);
         password.setOnAction((event) -> {
             if (!gcdbService.logIn(new User(username.getText(), password.getText(), 1))) {
                 label.setText("User not found or wrong password");
@@ -172,13 +180,12 @@ public class GUI extends Application {
             username.clear();
         });
 
-        usernameAndPassword.getChildren().addAll(enterusername, username, password, label);
         signInElements.getChildren().addAll(toNewUserWindow, closeProgram);
         signInElements.setSpacing(20);
-        signInWindow.setPadding(new Insets(20, 20, 20, 20));
-        usernameAndPassword.setPadding(new Insets(20, 20, 20, 20));
+        usernameAndPassword.getChildren().addAll(enterusername, username, password, label);
+        usernameAndPassword.setPadding(new Insets(20, 20, 20, 30));
         usernameAndPassword.setSpacing(20);
-        BorderPane.setAlignment(usernameAndPassword, Pos.CENTER);
+        signInWindow.setPadding(new Insets(20, 20, 20, 20));
         signInWindow.setBottom(signInElements);
         signInWindow.setCenter(usernameAndPassword);
         Scene loginScene = new Scene(signInWindow);
@@ -203,7 +210,7 @@ public class GUI extends Application {
         this.backToLoginView.setText("Back");
         this.backToLoginView.setStyle("-fx-background-color: #DE5865;");
         VBox usernameAndPassword = new VBox();
-        Text enterusername = new Text("Please enter username (Username must be at least 5 characters long)");
+        Text enterusername = new Text("Please enter username (Username must be between 5 to 20 characters)");
         Text enterpassword = new Text("Please enter password (Password must be at least 5 characters long)");
         enterusername.setFont(Font.font("Calibri", 20));
         enterpassword.setFont(Font.font("Calibri", 20));
@@ -250,64 +257,80 @@ public class GUI extends Application {
     /**
      * Ohjelman päänäkymän palauttava metodi. Rakentaa näkymän graafisen
      * ulkoasun ja määrittää näkymän painikkeiden ja hiiren painallusten
-     * toiminnallisuuden.
+     * toiminnallisuuden. Alustaa gameList-luokkamuuttujan.
      *
      * @return Palauttaa Scene-olion.
      */
     public Scene loadMainWindow() {
         BorderPane mainWindow = new BorderPane();
-
         mainWindow.setBackground(new Background(new BackgroundImage(mainBackGround, BackgroundRepeat.REPEAT,
                 BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-
-        ListView<String> gameList = new ListView();
-        Label gameLabel = new Label("Games");
-        gameLabel.setFont(Font.font("Calibri", 20));
+        mainWindow.setPadding(new Insets(15, 15, 15, 15));
+        this.gameList = new ListView();
+        gameList.setPrefHeight(250);
+        gameList.setPrefWidth(450);
         gameList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if (gameList.getSelectionModel().getSelectedIndex() >= 0) {
-                    BorderPane gw = gameView(gcdbService.getGameByIndex(gameList.getSelectionModel().getSelectedIndex()));
+                    BorderPane gw = gameView(gcdbService.getGameByIndex(gameList.getSelectionModel().getSelectedIndex()), mainWindow);
                     mainWindow.setBottom(gw);
                 }
             }
         });
         ListView<String> platformList = new ListView();
+        platformList.setPrefHeight(250);
+        platformList.setPrefWidth(300);
         Label platformLabel = new Label("Platforms:");
         platformLabel.setFont(Font.font("Calibri", 20));
-        Button newPlatformButton = new Button("Click here to add");
+        Button newPlatformButton = new Button("Add a platform");
         Label addNewPlatformLabel = new Label("Add a new platform");
         addNewPlatformLabel.setFont(Font.font("Calibri", 20));
         addNewPlatformLabel.setPadding(new Insets(10));
         Button removePlatformButton = new Button("Remove selected platform");
         TextField newPlatformField = new TextField();
         newPlatformField.setPromptText("new platform");
+        Label gameLabel = new Label("Games");
+        gameLabel.setFont(Font.font("Calibri", 20));
         removePlatformButton.setOnAction((event -> {
-            areYouSure.show();
-            yesButton.setOnAction((yesEvent) -> {
-                gcdbService.deleteGamesByPlatform(gcdbService.getCurrentlySelectedPlatform());
-                platformList.setItems(FXCollections.observableArrayList(gcdbService.deletePlatform(gcdbService.getCurrentlySelectedPlatform())));
-                gameList.setItems(FXCollections.observableArrayList());
-                gameLabel.setText("Games");
-                mainWindow.setBottom(new BorderPane());
-                areYouSure.close();
-            });
-            noButton.setOnAction((noEvent) -> {
-                areYouSure.close();
-            });
+            if (gcdbService.platformIsSelected()) {
+                areYouSure.show();
+                yesButton.setOnAction((yesEvent) -> {
+                    gcdbService.deleteGamesByPlatform(gcdbService.getCurrentlySelectedPlatform());
+                    platformList.setItems(FXCollections.observableArrayList(gcdbService.deletePlatform(gcdbService.getCurrentlySelectedPlatform())));
+                    gameList.setItems(FXCollections.observableArrayList());
+                    gameLabel.setText("Games");
+                    mainWindow.setBottom(new BorderPane());
+                    areYouSure.close();
+                });
+                noButton.setOnAction((noEvent) -> {
+                    areYouSure.close();
+                });
+            }
         }));
         newPlatformButton.setOnAction((event -> {
-            platformList.setItems(FXCollections.observableArrayList(gcdbService.saveNewPlatform(new Platform(newPlatformField.getText(), 0))));
-            newPlatformField.clear();
+            if (!newPlatformField.getText().equals("")) {
+                platformList.setItems(FXCollections.observableArrayList(gcdbService.saveNewPlatform(new Platform(newPlatformField.getText(), 0))));
+                newPlatformField.clear();
+            }
         }));
-        platformList.setPrefHeight(300);
-        platformList.setPrefWidth(300);
         ObservableList<String> platforms = FXCollections.observableArrayList(gcdbService.getUsersPlatformList());
+        platformList.setItems(platforms);
+        platformList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (platformList.getSelectionModel().getSelectedItem() != null) {
+                    gameList.setItems(FXCollections.observableArrayList(gcdbService.getPlatformsGames(platformList.getSelectionModel().getSelectedItem())));
+                    gameLabel.setText(gcdbService.getLoggedInUser() + "'s " + platformList.getSelectionModel().getSelectedItem() + " - games. Total: " + gcdbService.loggedInUsersGameCountForPlatform());
+                }
+            }
+        });
         VBox platformElements = new VBox();
+        platformElements.setSpacing(5);
         HBox topElements = new HBox();
         platformElements.getChildren().addAll(platformLabel, platformList, addNewPlatformLabel, newPlatformField, newPlatformButton, removePlatformButton);
+        platformElements.setPadding(new Insets(0, 10, 15, 10));
         topElements.getChildren().addAll(this.logOut, platformElements);
-        platformList.setItems(platforms);
         Button newGameButton = new Button("Add a game");
         Button removeGameButton = new Button("Remove selected game");
         ObservableList<String> gameCondition = FXCollections.observableArrayList(gcdbService.getConditions());
@@ -320,9 +343,9 @@ public class GUI extends Application {
         TextField newGameTextField = new TextField();
         newGameTextField.setPromptText("title");
         TextField newGameCommentField = new TextField();
-        newGameCommentField.setPromptText("comment(optional)");
+        newGameCommentField.setPromptText("comment (optional)");
         TextField newGameRegionField = new TextField();
-        newGameRegionField.setPromptText("region(optional)");
+        newGameRegionField.setPromptText("region (optional)");
         newGameButton.setOnAction((event -> {
             if (gcdbService.platformIsSelected() && gameConditionDrop.getValue() != null && gameContentDrop.getValue() != null) {
                 gameList.setItems(FXCollections.observableArrayList(gcdbService.saveNewGame(new Game(newGameTextField.getText(), gcdbService.conditionToInt(gameConditionDrop.getValue().toString()), gcdbService.contentToInt(gameContentDrop.getValue().toString()), newGameRegionField.getText(), newGameCommentField.getText()))));
@@ -348,15 +371,6 @@ public class GUI extends Application {
                 });
             }
         }));
-        platformList.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (platformList.getSelectionModel().getSelectedItem() != null) {
-                    gameList.setItems(FXCollections.observableArrayList(gcdbService.getPlatformsGames(platformList.getSelectionModel().getSelectedItem())));
-                    gameLabel.setText(gcdbService.getLoggedInUser() + "'s " + platformList.getSelectionModel().getSelectedItem() + " - games. Total: " + gcdbService.loggedInUsersGameCountForPlatform());
-                }
-            }
-        });
 
         GridPane AddgameElements = new GridPane();
         AddgameElements.setPadding(new Insets(5));
@@ -371,8 +385,7 @@ public class GUI extends Application {
         Label region = new Label("Region:");
         region.setFont(Font.font("Calibri", 15));
         VBox gameElements = new VBox();
-        gameList.setPrefHeight(300);
-        gameList.setPrefWidth(450);
+        gameElements.setSpacing(5);
         ColumnConstraints addGameCol0 = new ColumnConstraints(100);
         ColumnConstraints addGameCol1 = new ColumnConstraints(350);
         AddgameElements.getColumnConstraints().addAll(addGameCol0, addGameCol1);
@@ -388,10 +401,8 @@ public class GUI extends Application {
         AddgameElements.add(newGameRegionField, 1, 4);
         gameElements.getChildren().addAll(gameLabel, gameList, addNewGameLabel, AddgameElements, newGameButton, removeGameButton);
         gameElements.setPadding(new Insets(0, 10, 15, 10));
-        platformElements.setPadding(new Insets(0, 10, 15, 10));
         mainWindow.setRight(gameElements);
         mainWindow.setLeft(topElements);
-        mainWindow.setPadding(new Insets(15, 15, 15, 15));
         Scene mainScene = new Scene(mainWindow);
         return mainScene;
     }
@@ -400,37 +411,123 @@ public class GUI extends Application {
      * Yksittäisen pelin sisältämän BorderPane-olion palauttava metodi. Rakentaa
      * yksittäisen pelin graafisen ulkoasun.
      *
+     * @param game näytettävän pelin tiedot
+     * @param mainWindow pääikkuna annetaan parametrina, jotta pääikkunaan
+     * voidaan asettaa muokkausikkuna
+     *
+     * @see GUI#gameUpdateView(app.gcdb.domain.Game,
+     * javafx.scene.layout.BorderPane)
      * @return Palauttaa BorderPane-olion.
      */
-    public BorderPane gameView(Game game) {
+    public BorderPane gameView(Game game, BorderPane mainWindow) {
         BorderPane gameView = new BorderPane();
         gameView.setBackground(Background.EMPTY);
-        HBox additionalInfo = new HBox();
+        VBox additionalInfo = new VBox();
         additionalInfo.setBackground(Background.EMPTY);
-        additionalInfo.setSpacing(50);
-        additionalInfo.setAlignment(Pos.CENTER);
+        additionalInfo.setPadding(new Insets(20, 0, 0, 0));
+        additionalInfo.setSpacing(10);
         gameView.setPrefSize(450, 200);
         Label condition = new Label("Game condition: " + gcdbService.intToCondition(game.getCondition()));
-        Label contents = new Label("Region and contents: " + game.getRegion() + " " + gcdbService.intToContent(game.getContent()));
+        Label contents = new Label("Contents: " + gcdbService.intToContent(game.getContent()));
+        Label region = new Label("Region: " + gcdbService.getGameRegion(game));
         contents.setFont(Font.font("Calibri", 20));
         condition.setFont(Font.font("Calibri", 20));
-        additionalInfo.getChildren().addAll(condition, contents);
+        region.setFont(Font.font("Calibri", 20));
+        additionalInfo.getChildren().addAll(condition, contents, region);
         Label name = new Label(gcdbService.getCurrentlySelectedPlatform().getName() + ": " + game.getName());
         name.setFont(Font.font("Calibri", 30));
         Label comments = new Label(game.getComment());
         comments.setFont(Font.font("Calibri", 18));
         comments.wrapTextProperty();
         comments.setPrefWidth(600);
+        Button modifyGameButton = new Button("Modify game information");
+        modifyGameButton.setStyle("-fx-background-color: #70A4DF;");
+        modifyGameButton.setOnAction(event -> {
+            BorderPane updateView = gameUpdateView(game, mainWindow);
+            mainWindow.setBottom(updateView);
+        });
+        HBox bottomElements = new HBox();
+        bottomElements.getChildren().addAll(comments, modifyGameButton);
         gameView.setTop(name);
-        gameView.setCenter(additionalInfo);
-        gameView.setBottom(comments);
+        gameView.setLeft(additionalInfo);
+        gameView.setBottom(bottomElements);
         return gameView;
+    }
+
+    /**
+     * Yksittäisen pelin muokkausnäkymän palauttava metodi.
+     *
+     * @param game Muokattavan pelin tiedot.
+     * @param mainWindow pääikkuna annetaan parametrina, jotta pääikkunaan
+     * voidaan asettaa muokkausikkuna
+     *
+     * @return Palauttaa BorderPane-olion.
+     */
+    public BorderPane gameUpdateView(Game game, BorderPane mainWindow) {
+        BorderPane modView = new BorderPane();
+        modView.setBackground(Background.EMPTY);
+        VBox gameInfo = new VBox();
+        gameInfo.setBackground(Background.EMPTY);
+        gameInfo.setPadding(new Insets(20, 0, 0, 0));
+        gameInfo.setSpacing(10);
+        modView.setPrefSize(450, 200);
+        Label condition = new Label("Game condition: ");
+        Label contents = new Label("Contents: ");
+        Label region = new Label("Region: ");
+        contents.setFont(Font.font("Calibri", 20));
+        ObservableList<String> gameContent = FXCollections.observableArrayList(gcdbService.getContents());
+        ComboBox gameContentDrop = new ComboBox(gameContent);
+        gameContentDrop.getSelectionModel().select(game.getContent() - 1);
+        condition.setFont(Font.font("Calibri", 20));
+        ObservableList<String> gameCondition = FXCollections.observableArrayList(gcdbService.getConditions());
+        ComboBox gameConditionDrop = new ComboBox(gameCondition);
+        gameConditionDrop.getSelectionModel().select(game.getCondition() - 1);
+        region.setFont(Font.font("Calibri", 20));
+        TextField regionText = new TextField(game.getRegion());
+        if (game.getRegion().isEmpty()) {
+            regionText.setPromptText("Region");
+        }
+
+        HBox conditionBox = new HBox();
+        conditionBox.setPadding(new Insets(0, 10, 0, 0));
+        conditionBox.getChildren().addAll(condition, gameConditionDrop);
+        HBox contentBox = new HBox();
+        contentBox.setPadding(new Insets(0, 10, 0, 0));
+        contentBox.getChildren().addAll(contents, gameContentDrop);
+        HBox regionBox = new HBox();
+        regionBox.setPadding(new Insets(0, 10, 0, 0));
+        regionBox.getChildren().addAll(region, regionText);
+        gameInfo.getChildren().addAll(conditionBox, contentBox, regionBox);
+        Label name = new Label(gcdbService.getCurrentlySelectedPlatform().getName() + ": " + game.getName());
+        name.setFont(Font.font("Calibri", 30));
+        TextField comments = new TextField(game.getComment());
+        comments.setPrefWidth(500);
+        comments.setFont(Font.font("Calibri", 18));
+        if (game.getComment().isEmpty()) {
+            comments.setPromptText("Comment");
+        }
+        Button confirmButton = new Button("Confirm");
+        confirmButton.setStyle("-fx-background-color: #42f465;");
+        confirmButton.setOnAction(YesEvent -> {
+            Game update = new Game(
+                    game.getName(), game.getPlatform(), gameConditionDrop.getSelectionModel().getSelectedIndex() + 1,
+                    gameContentDrop.getSelectionModel().getSelectedIndex() + 1, game.getId(), regionText.getText(), comments.getText());
+            mainWindow.setBottom(gameView(update, mainWindow));
+            gameList.setItems(FXCollections.observableArrayList(gcdbService.updateGame(update)));
+        });
+        HBox bottomElements = new HBox();
+        bottomElements.setSpacing(10);
+        bottomElements.getChildren().addAll(comments, confirmButton);
+        modView.setTop(name);
+        modView.setLeft(gameInfo);
+        modView.setBottom(bottomElements);
+        return modView;
     }
 
     /**
      * "Oletko varma" -ikkunan rakentava metodi. Toiminnallisuus on toteutettu
      * erillisenä Stage-oliona, joka lukitsee pää-Stagen, kunnes kysymykseen on
-     * vastattu.
+     * vastattu "YES" tai "NO".
      *
      * @return Palauttaa Stage-olion.
      */
@@ -463,7 +560,11 @@ public class GUI extends Application {
     }
 
     /**
-     * Päämetodi. Käynnistää ohjelman.
+     * Käynnistää ohjelman.
+     *
+     * @param args komentoriviparametrit
+     *
+     * @throws SQLException virhe tietokantayhteydessä
      */
     public static void main(String[] args) throws SQLException {
         launch(args);

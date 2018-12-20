@@ -9,7 +9,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+/**
+ * Dao-luokka pelien tietokantahallintaa varten. Käyttää tietokannan
+ * Game-taulua.
+ *
+ */
 public class GameDao implements Dao<Game, Game> {
 
     private User user;
@@ -18,14 +25,46 @@ public class GameDao implements Dao<Game, Game> {
     public GameDao(Database database, User user) {
         this.user = user;
         this.db = database;
+        try {
+            createTable();
+        } catch (SQLException ex) {
+        }
     }
 
+    /**
+     * Luo tietokantataulun Game, mikäli taulua ei löydy ennestään.
+     */
+    @Override
+    public void createTable() throws SQLException {
+        try (Connection connection = db.newConnection()) {
+            PreparedStatement stmt = connection.prepareStatement(""
+                    + "CREATE TABLE IF NOT EXISTS Game "
+                    + "(id integer PRIMARY KEY, user_id integer, platform_id integer, name varchar(100), "
+                    + "condition integer, content integer, comment varchar(500), region varchar(50), "
+                    + "FOREIGN KEY(user_id) REFERENCES User(id), FOREIGN KEY(platform_id) REFERENCES Platform(id));");
+            stmt.execute();
+        }
+    }
+
+    /**
+     * Luokan konstruktorin käyttämä metodi kirjautuneen käyttäjän
+     * asettamiseksi.
+     *
+     * @param user Asetettava käyttäjä
+     */
     public void setUser(User user) {
         this.user = user;
     }
 
+    /**
+     * Hakee kaikki käyttäjän pelit.
+     *
+     * @return Palauttaa pelilistan.
+     * 
+     * @throws SQLException virhe tietokannanhallinnassa
+     */
     @Override
-    public List<Game> findAll(Game game) throws SQLException {
+    public List<Game> findAll() throws SQLException {
         List<Game> lst = new ArrayList<>();
         try (Connection connection = db.newConnection()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Game WHERE user_id = ?");
@@ -40,6 +79,16 @@ public class GameDao implements Dao<Game, Game> {
         return lst;
     }
 
+    /**
+     * Hakee yhden pelin pelin sisäisten muuttujien perusteella.
+     *
+     * @param game Haettava peli.
+     *
+     * @return Palauttaa null, jos peliä ei löydy. Palauttaa pelin, jos se
+     * löytyy tietokannasta.
+     * 
+     * @throws SQLException virhe tietokannanhallinnassa
+     */
     @Override
     public Game findOne(Game game) throws SQLException {
         try (Connection connection = db.newConnection()) {
@@ -58,6 +107,16 @@ public class GameDao implements Dao<Game, Game> {
         }
     }
 
+    /**
+     * Tallentaa uuden pelin tietokantaan.
+     *
+     * @param game Tallennettava peli.
+     *
+     * @return Palauttaa false, jos peli on jo tietokannassa. Palauttaa true,
+     * jos tallentaminen onnistui.
+     * 
+     * @throws SQLException virhe tietokannanhallinnassa
+     */
     @Override
     public boolean save(Game game) throws SQLException {
         if (findOne(game) != null) {
@@ -81,6 +140,16 @@ public class GameDao implements Dao<Game, Game> {
         }
     }
 
+    /**
+     * Poistaa pelin tietokannasta.
+     *
+     * @param game Poistettava peli.
+     *
+     * @return Palauttaa true, jos peliä on yritetty poistaa. Palauttaa false,
+     * jos tapahtuu SQLException.
+     * 
+     * @throws SQLException virhe tietokannanhallinnassa
+     */
     @Override
     public boolean delete(Game game) throws SQLException {
         try (Connection connection = db.newConnection()) {
@@ -91,6 +160,9 @@ public class GameDao implements Dao<Game, Game> {
             stmt.close();
             connection.close();
             return true;
+        } catch (SQLException error) {
+            return false;
         }
     }
+
 }

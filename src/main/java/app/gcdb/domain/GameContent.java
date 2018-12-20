@@ -1,5 +1,9 @@
 package app.gcdb.domain;
 
+/**
+ * Luokalla kuvataan pelin sisältöä. Luokkaa käytetään helpottamaan
+ * sisältöä kuvaavien sanallisten ja numeeristen arvojen yhdistämistä.
+ */
 public enum GameContent {
     NOT_DEFINED(1, "Not defined"),
     C(2, "Cart only"),

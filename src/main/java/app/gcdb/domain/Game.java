@@ -1,7 +1,8 @@
 package app.gcdb.domain;
 
 /**
- * Game-luokalla kuvataan pelejä. Muuttujina id, nimi, alusta, kunto, alue ja kommentti.
+ * Game-luokalla kuvataan pelejä. Muuttujina id, nimi, alusta, kunto, alue ja
+ * kommentti. Luokalla on pääsääntöisesti get- ja set-metodeita käytössään.
  */
 public class Game implements Comparable<Game> {
 
@@ -24,16 +25,6 @@ public class Game implements Comparable<Game> {
         this.region = region;
     }
 
-    public Game(String name, int platform, int condition, int content, int id, String comment) {
-        this.name = name;
-        this.platform = platform;
-        this.condition = condition;
-        this.content = content;
-        this.id = id;
-        this.comment = comment;
-        this.region = "";
-    }
-
     public Game(String name, int condition, int content, String region, String comment) {
         this.name = name;
         this.condition = condition;
@@ -44,6 +35,7 @@ public class Game implements Comparable<Game> {
 
     public Game(int id) {
         this.id = id;
+        this.name = "";
     }
 
     public String getRegion() {
@@ -66,6 +58,10 @@ public class Game implements Comparable<Game> {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getCondition() {
         return condition;
     }
@@ -76,6 +72,10 @@ public class Game implements Comparable<Game> {
 
     public String getComment() {
         return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     /**

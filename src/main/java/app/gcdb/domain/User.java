@@ -1,12 +1,12 @@
 package app.gcdb.domain;
 
-import app.gcdb.dao.GameDao;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * User-luokalla kuvataan ohjelman käyttäjiä.
+ * User-luokalla kuvataan ohjelman käyttäjiä. Käyttäjällä on parametreinään
+ * käyttäjätunnus, salasanatiiviste, peli- ja alustalistat sekä id.
  */
 public class User {
 
@@ -94,8 +94,8 @@ public class User {
     }
 
     /**
-     * Metodi järjestää käyttäjän pelit aakkosjärjestykseen ja asettaa pelit
-     * käyttäjän pelilistaksi.
+     * Järjestää käyttäjän pelit aakkosjärjestykseen ja asettaa pelit käyttäjän
+     * pelilistaksi.
      *
      * @param lst tietokannasta haettu käyttäjän pelilista.
      *
@@ -148,14 +148,19 @@ public class User {
     /**
      * Metodi palauttaa käyttäjän pelien nimet pyydetyltä alustalta. Metodia
      * käytetään GUI-luokan ListView-olioiden parametrina.
+     * 
+     * @param platform Alusta, jonka pelit haetaan näytettäväksi.
      *
      * @return Käyttäjän pelit String-listana.
+     * 
      */
     public List<String> getViewableGames(Platform platform) {
+        int idx = 1;
         List<String> gameStrings = new ArrayList<>();
         for (int i = 0; i < this.games.size(); i++) {
             if (platform.getId() == this.games.get(i).getPlatform()) {
-                gameStrings.add(this.games.get(i).getName());
+                gameStrings.add(idx + ". " + this.games.get(i).getName());
+                idx++;
             }
         }
         return gameStrings;

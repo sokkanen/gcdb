@@ -20,4 +20,8 @@ päivä | aika | mitä tein
 08.12 | 2    | Pelien aluekoodien lisäysmahdollisuus. Lisää testikattavuutta. Ulkoasun hiontaa.
 09.12 | 3    | JavaDoc. Koodin siivoamisen aloittaminen.
 10.12 | 4    | Koodin siivoaminen. GameContent ja GameCondition-Enumluokat. Dokumentaatio.
-YHT   | 48
+15.12 | 2    | Pelin muokkausmetodi ja näkymä
+16.12 | 3    | Muokkausmetodin bugikorjaukset. Testikattavuus uusille luokille. Koodin siivoaminen.
+18.12 | 3    | JavaDoc, Dokumentointi. Vapaasti valittava tietokannan nimi erillisessä tiedostossa.
+19.12 | 2    | JavaDoc, Dokumentointi.
+YHT   | 58

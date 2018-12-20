@@ -1,5 +1,9 @@
 package app.gcdb.domain;
 
+/**
+ * Luokalla kuvataan pelin kuntoluokitusta. Luokkaa käytetään helpottamaan
+ * kuntoluokitusta kuvaavien sanallisten ja numeeristen arvojen yhdistämistä.
+ */
 public enum GameCondition {
     NOT_DEFINED(1, "Not defined"),
     VERY_POOR(2, "Very Poor"),

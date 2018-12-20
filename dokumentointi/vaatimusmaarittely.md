@@ -10,19 +10,24 @@ ja näin helpottaa kokoelmansa kirjanpitoa.
 
 Ohjelman ensimmäisessä versiossa on vain peruskäyttäjiä.
 
-### Käyttöliittymäluonnos ###
+### Käyttöliittymä ###
 
-Sovellus koostuu kolmesta näkymästä. Nämä ovat kirjautumisnäkymä, uuden käyttäjän lisäämisnäkymä ja päänäkymä.
+Sovellus koostuu neljästä näkymästä. Nämä ovat kirjautumisnäkymä, uuden käyttäjän lisäämisnäkymä, päänäkymä sekä 
+ohjelman sammutusnäkymä.
 
 ### Perusversion tarjoama toiminnallisuus ###
 
 #### Ennen kirjautumista ###
 
 * Käyttäjä voi luoda salasanalla suojatun käyttäjätunnuksen
-	* Käyttäjätunnuksen tulee olla vähintään 4 ja salasanan vähintään 5 merkkiä pitkiä. Mikäli
-	jompikumpi ehdoista ei toteudu, ilmoittaa järjestelmä virheestä.
+	* Käyttäjätunnuksen tulee olla 5-20 merkkiä pitkä.
+	* Salasanan tulee olla vähintään 5 merkkiä pitkä. 
+	* Mikäli jompikumpi em. ehdoista ei toteudu, ilmoittaa järjestelmä virheestä.
+	* Järjestelmä ilmoittaa mikäli käyttäjätunnus on varattu.
 * Käyttäjä voi kirjautua järjestelmään käyttäjätunnuksella ja salasanalla
-	* Jos käyttätunnusta ei ole luotu tai salanasa on virheellinen, ilmoittaa järjestelmä virheestä.
+	* Jos käyttätunnusta ei ole luotu tai salasana on virheellinen, ilmoittaa järjestelmä virheestä.
+* Käyttäjä voi jatkaa sovellukseen tai kirjautua ulos.
+* Käyttäjä voi sulkea sovelluksen.
 
 #### Kirjautumisen jälkeen ###
 
@@ -33,17 +38,26 @@ Sovellus koostuu kolmesta näkymästä. Nämä ovat kirjautumisnäkymä, uuden k
 * Pelialustan valitsemalla, käyttäjä näkee alustalle lisätyt pelit
 
 * Käyttäjä voi lisätä pelialustalle pelin
-* Kokoelman pelit ovat yksilöitä, joten käyttäjä voi lisätä useamman saman pelin.
+* Käyttäjä näkee kunkin pelialustan pelien määrän.
+* Kokoelman pelit ovat yksilöitä, joten käyttäjä voi lisätä useamman samannimisen pelin,
+olettaen että peleissä on jokin yksilöivä tekijä (nimi, kunto, sisältö, aluekoodi tai kommentti).
 * Käyttäjä voi poistaa pelin
-* Pelin valitsemalla käyttäjä näkee syöttämänsä pelin tiedot (nimeke, kuntoluokka, sisältö ja kommentti)
-* Käyttäjä voi poistaa pelialustan
+* Pelin valitsemalla käyttäjä näkee syöttämänsä pelin tiedot (nimi, kuntoluokka, sisältö, aluekoodi ja kommentti)
+* Käyttäjä voi muokata lisätyn pelin sisäisiä tietoja (kunto, sisältö, aluekoodi ja kommentti).
 
+* Käyttäjä voi poistaa pelin
+* Käyttäjä voi poistaa pelialustan
+* Poistamalla pelialustan myös alustalla mahdollisesti olevat pelit poistuvat
 * Käyttäjä voi kirjautua ulos järjestelmästä
+
+* Järjestelmä varmistaa ennen alustan tai pelin poistamista sekä uloskirjautumista, että käyttäjä on varma
+haluamastaan toiminnosta.
 
 ### Jatkokehitysideoita ###
 
 Perusversion julkaisun jälkeen ohjelmaa on tarkoitus täydentää seuraavilla ominaisuuksilla
 
-* Peliin voi linkata pelistä kertovan nettisivun (esim. Wikipedia)
-* Järjestelmä hakee pelin kansikuvan automaattisesti ja näyttää sen kulloinkin valitun pelin vieressä
+* Peliin voi lisätä kuvia (Vaatii tiedon tallennuksen muutoksen, sillä SQLITE tukee vain bittikarttoja).
+* Pelin ajantasaisen hinnan voi tarkastaa ohjelman kautta Ebaysta (esim. keskiarvohinta viimeisistä 10 myydystä.)
 * Vapaa keräilykohteen ja kategorisoinnin valinta.
+* Ohjelmasta voi tulostaa XML-muotoisen, jaettavan pelilistan
