@@ -32,24 +32,20 @@ ohjelman sammutusnäkymä.
 #### Kirjautumisen jälkeen ###
 
 * Kunkin käyttäjän sisältö näkyy vain kyseiselle käyttäjälle
-
-* Käyttäjä näkee lisäämänsä pelialustat
-* Käyttäjä voi lisätä pelialustan
-* Pelialustan valitsemalla, käyttäjä näkee alustalle lisätyt pelit
-
-* Käyttäjä voi lisätä pelialustalle pelin
-* Käyttäjä näkee kunkin pelialustan pelien määrän.
-* Kokoelman pelit ovat yksilöitä, joten käyttäjä voi lisätä useamman samannimisen pelin,
+	* Käyttäjä näkee lisäämänsä pelialustat
+	* Käyttäjä voi lisätä pelialustan
+	* Pelialustan valitsemalla, käyttäjä näkee alustalle lisätyt pelit
+	* Käyttäjä voi lisätä pelialustalle pelin
+	* Käyttäjä näkee kunkin pelialustan pelien määrän.
+	* Kokoelman pelit ovat yksilöitä, joten käyttäjä voi lisätä useamman samannimisen pelin,
 olettaen että peleissä on jokin yksilöivä tekijä (nimi, kunto, sisältö, aluekoodi tai kommentti).
-* Käyttäjä voi poistaa pelin
-* Pelin valitsemalla käyttäjä näkee syöttämänsä pelin tiedot (nimi, kuntoluokka, sisältö, aluekoodi ja kommentti)
-* Käyttäjä voi muokata lisätyn pelin sisäisiä tietoja (kunto, sisältö, aluekoodi ja kommentti).
-
-* Käyttäjä voi poistaa pelin
-* Käyttäjä voi poistaa pelialustan
-* Poistamalla pelialustan myös alustalla mahdollisesti olevat pelit poistuvat
+	* Käyttäjä voi poistaa pelin
+	* Pelin valitsemalla käyttäjä näkee syöttämänsä pelin tiedot (nimi, kuntoluokka, sisältö, aluekoodi ja kommentti)
+	* Käyttäjä voi muokata lisätyn pelin sisäisiä tietoja (kunto, sisältö, aluekoodi ja kommentti).
+	* Käyttäjä voi poistaa pelin
+	* Käyttäjä voi poistaa pelialustan
+	* Poistamalla pelialustan myös alustalla mahdollisesti olevat pelit poistuvat
 * Käyttäjä voi kirjautua ulos järjestelmästä
-
 * Järjestelmä varmistaa ennen alustan tai pelin poistamista sekä uloskirjautumista, että käyttäjä on varma
 haluamastaan toiminnosta.
 
