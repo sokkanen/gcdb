@@ -20,7 +20,7 @@ ja näin helpottaa kokoelmansa kirjanpitoa. Sovellus tukee useaa rekisteröityny
 
 [Viikko 6](https://github.com/sokkanen/ot-harjoitustyo/releases)
 
-[Loppupalautus](https://github.com/sokkanen/ot-harjoitustyo/releases)
+[Loppupalautus](https://github.com/sokkanen/ot-harjoitustyo/releases/tag/final)
 
 ### Komentorivitoiminnot
 #### Testaus
@@ -41,6 +41,12 @@ mvn compile exec:java -Dexec.mainClass=app.gcdb.ui.GUI
 target -hakemistoon luodaan GCDB-1.0-SNAPSHOT.jar komennolla
 ```
 mvn package
+```
+#### JavaDoc
+
+JavaDoc generoidaan komennolla
+```
+mvn javadoc:javadoc
 ```
 
 #### Checkstyle
