@@ -12,7 +12,7 @@ Tiedoston muoto on seuraava
 ```
 database=:resource:gcdb.db
 ```
-Voit myös ladata varmiin gcdb.conf -tiedoston.
+Voit myös ladata varmiin ![gcdb.conf](https://github.com/sokkanen/ot-harjoitustyo/blob/master/gcdb.conf) -tiedoston.
 
 Kaikki muut ohjelman tarvitsemat tiedostot (kuten esimerkiksi kuvat) sisältyvät .jar-pakkaukseen.
 
